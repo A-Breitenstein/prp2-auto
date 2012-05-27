@@ -7,6 +7,7 @@ package aufgabe1b;
 /**
  *
  * @author Sven
+ * SVN TEST
  */
 public class VehiclePhysics {
     // zutesten zwecken public
