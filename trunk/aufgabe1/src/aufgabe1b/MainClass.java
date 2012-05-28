@@ -301,7 +301,7 @@ public class MainClass extends JGEngine {
                 x_pos - X_STRING_OFFSET, y_pos + (Y_STRING_OFFSET * -1), 0);
         drawString("level: " + Math.round(vehicle.getLevelInPercent()) + " %",
                 x_pos - X_STRING_OFFSET, y_pos + (Y_STRING_OFFSET * 0), 0);
-        drawString("acc:" + Math.round(vehicle.PhysicsModel.accFinal) + " m/s²",
+        drawString("acc:" + Math.round(vehicle.PhysicsModel.accFinal_mss) + " m/s²",
                 x_pos - X_STRING_OFFSET, y_pos + (Y_STRING_OFFSET * 1), 0);
         drawString("force:" + Math.round(vehicle.PhysicsModel.forceFinal_n) + " N",
                 x_pos - X_STRING_OFFSET, y_pos + (Y_STRING_OFFSET * 2), 0);
