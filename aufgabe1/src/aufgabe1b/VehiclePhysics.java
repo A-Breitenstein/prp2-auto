@@ -1,15 +1,29 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package aufgabe1b;
+
+import Values.*;
+import static Values.Values.*;
 
 /**
  *
- * @author Sven
- * SVN TEST
+ * @author Bartel, Breitenstein
+ * @version SVN: Google Code
  */
+
 public class VehiclePhysics {
+    
+    // ADT
+    private Power powerPropMax;
+    private Mass mass;
+    private Speed speed, speedMax;
+    private TimeDiff elapsedTime;
+    private Length traveledDistance;
+    private Force forcePropMax, forceDrag,
+                  forceBrake, forceBrakeMax, forceBrakeCurveMax,
+                  forceFinal;
+    private Acc accFinal, accCurve, accZentrifugal,
+                accZentrifugalMax;
+    
     // zutesten zwecken public
     public double powerPropMax_w, 
                    mass_kg,
@@ -21,15 +35,27 @@ public class VehiclePhysics {
                    forceBrake_n,forceBrakeMax_n,forceBrakeCurveMax_n,
                    forceFinal_n,
             
-                   
-                   accFinal,accCurve_mss,accZentrifugal_mss,
+                   //changed accFinal into accFinal_mss because of previous code
+                   //convention
+                   accFinal_mss,accCurve_mss,accZentrifugal_mss,
                    accZentrifugalMax_mss;
     
     private final double DRAG_CONST;
     private final double ACC_EARTH = 9.82;
     private final double NORMAL_TRACTION = 1.0;
     private boolean tractionloss,ABS_active,ASR_active,tiresblocked;
+   
+   //ADT:: public void reset()
+    public void reset(){
+        elapsedTime = timeDiffInS(0d);
+        traveledDistance = lengthInM(0d);
+        speed = speedInKmh(0d);
+        forceFinal = forceInN(0d);
+        tractionloss = false;
+        tiresblocked = false;
+    }
     
+   /*
    public void reset(){
        elapsedTime_s = 0;
        traveledDistance_m = 0;
@@ -38,7 +64,19 @@ public class VehiclePhysics {
        tractionloss = false;
        tiresblocked = false;
     }
+    */
     
+    //ADT:: private private VehiclePhysics(double mass_kg,double powerPropMax_w,double speedMax_ms)
+    private VehiclePhysics(Mass mass, Power powerPropMax, Speed speedMax){
+        this.mass = mass;
+        this.powerPropMax = powerPropMax;
+        this.speedMax = speedMax;
+        DRAG_CONST = Math.abs(powerPropMax.div(Math.pow(speedMax.mps(), 3)).w());
+        forceBrakeMax = forceInN(calcCineticEnergie_w(speed, mass));
+        setTractionLevel(NORMAL_TRACTION);
+        reset();
+    }
+    /*
     private VehiclePhysics(double mass_kg,double powerPropMax_w,double speedMax_ms){
         this.mass_kg = mass_kg;
         this.powerPropMax_w = powerPropMax_w;
@@ -48,14 +86,50 @@ public class VehiclePhysics {
         setTractionLevel(NORMAL_TRACTION);
         reset();
     }
+    */
     
+    //ADT:: static VehiclePhysics create(double mass_kg,double powerPropMax_w,double speedMax_ms)
+    static VehiclePhysics create(double mass_kg,double powerPropMax_w,double speedMax_ms){
+        Mass mass = massInKg(mass_kg);
+        Power powerPropMax = powerInW(powerPropMax_w);
+        Speed speedMax = speedInMpS(speedMax_ms);
+        
+        return new VehiclePhysics(mass,powerPropMax,speedMax);
+    }
+    
+    /*
     static VehiclePhysics create(double mass_kg,double powerPropMax_w,double speedMax_ms){
         return new VehiclePhysics(mass_kg,powerPropMax_w,speedMax_ms);
     }
+    */
     
     
+    //ADT:: private void calcForceFinal_n(double level,double brakelevel,double controlAngleInRad)
+    private void calcForceFinal_n(double level,double brakelevel,Angle controlAngle){
+        Force forceProp, forcePropAbs, forceResultPropBrake;
+        forcePropAbs = calcForcePropAbs_n(level);
+        
+        forceBrakeCurveMax = forceInN(Math.sqrt(
+        forceInN(Math.pow(accZentrifugalMax.mul(mass).n(),2)).sub(forceInN(Math.pow(accZentrifugal.mul(mass).n(), 2))).n()
+                                                ));
+        
+        forceBrake = calcForceBrake(brakelevel);
+        
+        forceProp = forcePropAbs.mul(Math.copySign(1, level));
+        
+        forceResultPropBrake = forceProp.add(forceBrake);
+        
+        accZentrifugal = calcZentrifugalAcc(controlAngle);
+        accCurve = accInMss(Math.sqrt(Math.pow(forceResultPropBrake.div(mass).mss(), 2) + Math.pow(accZentrifugal.mss(), 2)));
+        
+        if (accCurve.mss() > accZentrifugalMax.mss()) tiresblocked = true;
+         
+        forceDrag = forceInN(speedInMpS(Math.pow(speed.mps(), 2)).mul(Math.copySign(1, speed.invers().mps())).mul(DRAG_CONST).mps());
+        forceFinal = forceResultPropBrake.add(forceDrag);
+        
+    }
     
-    
+    /*
     private void calcForceFinal_n(double level,double brakelevel,double controlAngleInRad) {
         double forceProp_n,forcePropAbs_n;
 
@@ -82,21 +156,59 @@ public class VehiclePhysics {
         forceDrag_n =(DRAG_CONST * Math.pow(speed_ms, 2) * Math.copySign(1, -speed_ms));
         forceFinal_n = forceResultPropBrake_n+forceDrag_n;
     }
+    */
     
     
-    
-    
+    //ADT:: private void calcCinematic(double deltaTime_s, double force_n)
+    private void calcCinematic(TimeDiff deltaTime, Force force){
+        accFinal = force.div(mass);
+        speed = speed.add(accFinal.mul(deltaTime));
+        traveledDistance = traveledDistance.add(lengthInM(Math.abs(speed.mps())*deltaTime.s()));
+        elapsedTime = elapsedTime.add(deltaTime);
+    }
+    /*
     private void calcCinematic(double deltaTime_s, double force_n) {
-       accFinal = force_n / mass_kg;
-       speed_ms = speed_ms + accFinal * deltaTime_s;
+       accFinal_mss = force_n / mass_kg;
+       speed_ms = speed_ms + accFinal_mss * deltaTime_s;
        traveledDistance_m = traveledDistance_m + (Math.abs(speed_ms) * deltaTime_s);
        elapsedTime_s = elapsedTime_s + deltaTime_s; 
 
     }  
-    
+    */
     
     
 
+    //ADT:: private double calcForceBrake(double brakeLevel)
+    private Force calcForceBrake(double brakeLevel){
+        Force tempForceBrake, absouluteForceBrake;
+        
+        tempForceBrake = forceBrakeMax.mul(brakeLevel).mul(Math.copySign(1, speed.invers().mps()));
+        absouluteForceBrake = forceInN(Math.abs(tempForceBrake.n()));
+        
+        if (ABS_active) {
+            if (absouluteForceBrake.n()  > forcePropMax.n()) {
+                if (forceBrakeCurveMax.n() < forcePropMax.n()) {
+                   tempForceBrake  = forceBrakeCurveMax.mul(0.98).mul(Math.copySign(1, speed.invers().mps()));
+                } else {
+                   tempForceBrake = forcePropMax.mul(Math.copySign(1, speed.invers().mps()));
+                }
+            }
+
+            tiresblocked = false;
+        } else {
+            if (absouluteForceBrake.n()  > forcePropMax.n() || absouluteForceBrake.n()  > forceBrakeCurveMax.n()) {
+                tiresblocked = true;
+                tempForceBrake = absouluteForceBrake.mul(0.3).mul(Math.copySign(1, speed.invers().mps()));
+            } else {
+                tiresblocked = false;
+            }   
+        }
+        return tempForceBrake;
+        
+        
+        
+    }
+    /*
     //performABScheck()
         private double calcForceBrake(double brakeLevel) {
         double temp_forceBrake_n = forceBrakeMax_n * brakeLevel * Math.copySign(1, -speed_ms);
@@ -123,29 +235,55 @@ public class VehiclePhysics {
         return temp_forceBrake_n;
         
     }
+    */
         
-        
+        //ADT:: private void kammscher_kreis()
         private void kammscher_kreis() {
-        if (accCurve_mss > accZentrifugalMax_mss) {  
+        if (accCurve.mss() > accZentrifugalMax.mss())   
             tiresblocked = true;
-        } 
-       
-    }
-
-    private double calcZentrifugalAcc(double controlAngleInRad) {
-        double accZentrifugal_mss;
-        if (controlAngleInRad == 0 || speed_ms == 0) {
-            accZentrifugal_mss = 0;
-        } else {
-            //Gleichförmige Kreisbewegung  diff s = radius*diff winkel
-            double absSpeed_ms = Math.abs(speed_ms);
-            double kurvenRadius_m = absSpeed_ms / Math.abs(controlAngleInRad);
-            accZentrifugal_mss = (absSpeed_ms * absSpeed_ms) / kurvenRadius_m;
         }
+        
+        /*
+        private void kammscher_kreis() {
+        if (accCurve_mss > accZentrifugalMax_mss)   
+            tiresblocked = true;
+        }
+        */
+        
+    
 
-        return accZentrifugal_mss;
-    }
+        //ADT:: private double calcZentrifugalAcc(double controlAngleInRad)
+        private Acc calcZentrifugalAcc(Angle controlAngle){
+            Acc accZentrifugal;
+            if(controlAngle.isZero() || speed.isZero()){
+                accZentrifugal = accInMss(0d);
+            }else{
+                Speed absSpeed = speedInMpS(Math.abs(speed.mps()));
+                Length kurvenRadius = lengthInM(absSpeed.div(Math.abs(controlAngle.rad())).mps());
+                accZentrifugal = accInMss(speedInMpS(Math.pow(absSpeed.mps(), 2)).div(kurvenRadius.m()).mps());
+            }
+            return accZentrifugal;
+        }
+        
+        /*
+        private double calcZentrifugalAcc(double controlAngleInRad) {
+            double accZentrifugal_mss;
+            if (controlAngleInRad == 0 || speed_ms == 0) {
+                accZentrifugal_mss = 0;
+            } else {
+                //Gleichförmige Kreisbewegung  diff s = radius*diff winkel
+                double absSpeed_ms = Math.abs(speed_ms);
+                double kurvenRadius_m = absSpeed_ms / Math.abs(controlAngleInRad);
+                accZentrifugal_mss = (absSpeed_ms * absSpeed_ms) / kurvenRadius_m;
+            }
 
+            return accZentrifugal_mss;
+        }
+        */
+        
+        
+        
+        
     private double calcCurveMaxSpeed_ms(double curveRadius_m) {
         
          return Math.sqrt(accZentrifugalMax_mss * curveRadius_m);
@@ -159,7 +297,40 @@ public class VehiclePhysics {
     }
         
      
-    
+    //ADT:: private double calcForcePropAbs_n(double level)
+        private Force calcForcePropAbs_n(double level){
+            Power powerProp;
+            Force forcePropAbs;
+
+            powerProp = powerPropMax.mul(Math.abs(level));
+
+            if (!(speed.isZero())) {
+                if (ASR_active) {
+                    forcePropAbs = forceInN(Math.min(forcePropMax.n(), powerProp.div(speedInMpS(Math.abs(speed.mps()))).n()));
+                } else {
+                    tractionloss = false;
+                    forcePropAbs = powerProp.div(speedInMpS(Math.abs(speed.mps())));
+                    if (forcePropAbs.n() > forcePropMax.n() && (level > 0.05 || level < -0.05)) {
+                        forcePropAbs = forcePropAbs.mul(0.20); //Wenn durch größere Kräfte die maximal mögliche Beschleunigung
+                                                                //zu überschreiten versucht wird,führt zu
+                                                                //einer um ca. 15% verminderten Beschleunigung und, da
+                                                                //das Rad dabei nicht rollt, sondern rutscht,
+                        tractionloss = true;
+                    }
+
+                }
+
+            } else {
+                if (level != 0) {
+                    forcePropAbs = forcePropMax;
+                }
+                else{
+                    forcePropAbs = forceInN(0d);
+                }
+            }
+     return forcePropAbs;
+     }
+    /*    
     private double calcForcePropAbs_n(double level){
         double powerProp_w,
                 forcePropAbs_n;
@@ -192,40 +363,74 @@ public class VehiclePhysics {
         }
     return forcePropAbs_n;
     }
+    */
     
-    
+    //ADT:: public void step(double deltaTime_s,double level,double brakeLevel,double controlAngleInRad)
+    public void step(double deltaTime_s,double level,double brakeLevel,double controlAngleInRad){
+        TimeDiff deltaTime = timeDiffInS(deltaTime_s);
+        Angle controlAngle = angleInRad(controlAngleInRad);
+        
+        calcForceFinal_n(level, brakeLevel, controlAngle);
+        calcCinematic(deltaTime, forceFinal); 
+    }
+
+    /*
     public void step(double deltaTime_s,double level,double brakeLevel,double controlAngleInRad){
         calcForceFinal_n(level, brakeLevel, controlAngleInRad);
         calcCinematic(deltaTime_s, forceFinal_n);    
     }
-        
+    */
     
+    //ADT private double calcCineticEnergie_w(Speed speed, Mass mass)
+    private double calcCineticEnergie_w(Speed speed, Mass mass) {
+        return speed.mps() * speed.mps() * mass.kg() * 0.5;
+    }
+    /*
     private double calcCineticEnergie_w(double speed_ms, double mass_kg) {
         return speed_ms * speed_ms * mass_kg * 0.5;
     }
-    
+    */
+   
+    //ADT:: public void setTractionLevel(double TractionLevel)
+    public void setTractionLevel(double TractionLevel) {
+        Acc tractionAcc = accInMss(ACC_EARTH * TractionLevel);
+        forcePropMax = forceInKN(mass.mul(tractionAcc.mss()).kg());
+        accZentrifugalMax = tractionAcc;
+    }
+   
+    /*
    public void setTractionLevel(double TractionLevel) {
         double traction_acc_m_ss = ACC_EARTH * TractionLevel;
         forcePropMax_n = mass_kg * traction_acc_m_ss;//tractionlvl
         accZentrifugalMax_mss = traction_acc_m_ss;
     }
-    
+    */
     
    
    public boolean isTriesBlocked(){
        return tiresblocked;
    }
    
+   //ADT:: public boolean tiresArentBlockedAndSpeedisNotNull()
+   public boolean tiresArentBlockedAndSpeedisNotNull(){
+       return !tiresblocked && (speed.mps() > 0.9 || speed.mps() < -0.9);
+   }
+   /*
    public boolean tiresArentBlockedAndSpeedisNotNull(){
        return !tiresblocked && (speed_ms > 0.9 || speed_ms < -0.9);
    }
-    
+   */
+   
+   //ADT:: public double getSpeed_ms()
+   public double getSpeed_ms(){
+        return speed.mps();
+   }
+   /*
    public double getSpeed_ms(){
         return speed_ms;
    }
-    
+   */ 
 
-   
     public void turnABS_on() {
         ABS_active = true;
     }
@@ -248,14 +453,26 @@ public class VehiclePhysics {
         return ("ABS: " + ((ABS_active) ? ("ON") : ("OFF")) + ", ASR: " + ((ASR_active) ? ("ON") : ("OFF")));
     }
     
-    
+    //ADT:: public double getAccBrake_mss()
+    public double getAccBrake_mss() {
+        return forceBrake.div(mass).mss();
+    }
+    /*
     public double getAccBrake_mss() {
         return forceBrake_n / mass_kg;
     }
+    */
     
+    //ADT:: public boolean isKurvenMaxAccNearlyReached(double controlAngleInDeg)
+    public boolean isKurvenMaxAccNearlyReached(double controlAngleInDeg){
+        Angle controlAngle = angleInDeg(controlAngleInDeg);
+        return ( accCurve.mss() > (accZentrifugalMax.mul(0.80).mss()) && (controlAngle.deg() > 1 || controlAngle.deg() < -1) && !tiresblocked);
+    }
+    /*
     public boolean isKurvenMaxAccNearlyReached(double controlAngleInDeg){
         return ( accCurve_mss > (accZentrifugalMax_mss*0.80) && (controlAngleInDeg > 1 || controlAngleInDeg < -1) && !tiresblocked);
     }
+    */
     public boolean isTractionloss() {
         return tractionloss;
     }
