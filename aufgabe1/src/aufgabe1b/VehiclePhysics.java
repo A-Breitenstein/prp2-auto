@@ -89,6 +89,11 @@ public class VehiclePhysics {
     */
     
     //ADT:: static VehiclePhysics create(double mass_kg,double powerPropMax_w,double speedMax_ms)
+    static VehiclePhysics create(Mass mass ,Power powerPropMax,Speed speedMax){
+        
+        return new VehiclePhysics(mass,powerPropMax,speedMax);
+    }
+    /*
     static VehiclePhysics create(double mass_kg,double powerPropMax_w,double speedMax_ms){
         Mass mass = massInKg(mass_kg);
         Power powerPropMax = powerInW(powerPropMax_w);
@@ -96,7 +101,7 @@ public class VehiclePhysics {
         
         return new VehiclePhysics(mass,powerPropMax,speedMax);
     }
-    
+    */
     /*
     static VehiclePhysics create(double mass_kg,double powerPropMax_w,double speedMax_ms){
         return new VehiclePhysics(mass_kg,powerPropMax_w,speedMax_ms);
