@@ -45,7 +45,25 @@ public class UtyValuesUnitTest {
     public void test_SpeedInKmh(){
         //Speed speed = Values.speedInKmh(30);
         System.out.println("hallo test");
+        Speed spo1,spo2,spo3,spo4,spo5;
         double mps = 30;
+        spo1 = Values.speedInKmh(mps);
+        spo2 = Values.speedInKmh(40);
+       
         assertEquals(Values.speedInKmh(mps), Values.speedInKmh(mps));
+        assertEquals(Values.speedInKmh(mps+mps),spo1.add(spo1) );
+        assertEquals(Values.speedInKmh(mps-mps),spo1.sub(spo1));
+        assertEquals(Values.speedInKmh(mps*2),spo1.mul(2d));
+        assertEquals(Values.speedInKmh(mps/2),spo1.div(2d));
+        
+        assertTrue(spo2.compareTo(spo1) == 1);
+        assertTrue(spo2.compareTo(spo2) == 0);
+        assertTrue(spo1.compareTo(spo2) == -1);
+        
+        assertTrue(!spo1.isZero());
+        assertEquals(Values.speedInMpS(30), Values.speedInKmh(108));
+        
+ 
+        
     }
 }
