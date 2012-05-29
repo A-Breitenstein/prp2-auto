@@ -48,7 +48,7 @@ public class ForceInN extends AbstractScalar implements Force {
 
     @Override
     public double n() {
-        return this.n();
+        return n;
     }
 
     @Override

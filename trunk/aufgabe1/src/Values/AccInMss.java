@@ -45,7 +45,7 @@ public class AccInMss extends AbstractScalar implements Acc {
 
     @Override
     public double mss() {
-        return this.mss();
+        return mss;
     }
 
     @Override

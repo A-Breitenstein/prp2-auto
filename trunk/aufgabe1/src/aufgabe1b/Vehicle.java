@@ -38,6 +38,7 @@ public class Vehicle {
     private Vehicle(String name,double mass_kg, double powerPropMax_kw, double speedMax_kmh) {
         VEHICLE_NAME = name;
         PhysicsModel = VehiclePhysics.create(massInKg(mass_kg), powerInKW(powerPropMax_kw), speedInKmh(speedMax_kmh));
+        System.out.println("init: "+PhysicsModel.getSpeed_ms());
         reset();
     }
 
@@ -45,13 +46,13 @@ public class Vehicle {
         return new Vehicle(name,mass_kg, powerPropMax_kw, speedMax_kmh);
     }
     public static Vehicle New() {
-        return new Vehicle("Porsche911GT2RS",1445, 456*1000, 330/3.6);
+        return new Vehicle("Porsche911GT2RS",1445, 456, 330);
     }
 
     // OPERATIONS--------------------------------------------
     
-    public void step(double deltaTime_s) {
-
+    private void throttleControl(){
+    
         if (!level_button_pressed && (level >= 0.019d || level <= -0.019d)) {
             level += LEVEL_CONST() * Math.copySign(1, -level);
         }
@@ -62,6 +63,12 @@ public class Vehicle {
         brakelevel_button_pressed = false;
         level_button_pressed = false;
         
+    
+    }
+    
+    public void step(double deltaTime_s) {
+        System.out.println("-|-|-VeicleStep-|-|-");
+        throttleControl();
         PhysicsModel.step(deltaTime_s, level,brakeLevel,getControlAngleInRad());
         
         
@@ -70,7 +77,6 @@ public class Vehicle {
         }
         posAngle_rad = PosAngleRad_overflowCorrection(posAngle_rad);
         vecPos_m = calcDisplayPosition(deltaTime_s,posAngle_rad,PhysicsModel.getSpeed_ms(),vecPos_m);
-        
         estimatedLineOfMovement = forecastLine(vecPos_m.x,vecPos_m.y, PhysicsModel.getSpeed_ms(), deltaTime_s,posAngle_rad,getControlAngleInRad());
 
     }
