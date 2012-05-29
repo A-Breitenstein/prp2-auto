@@ -43,7 +43,7 @@ public final class AngleInRad extends AbstractScalar implements Angle {
 
     @Override
     public boolean isZero() {
-        return this == ZERO_ANGLE;
+        return this.equals(ZERO_ANGLE);
     }
 
     @Override

@@ -41,7 +41,7 @@ final class MassInKg extends  AbstractScalar implements Mass {
 
     @Override
     public boolean isZero() {
-      return this == ZERO_MASS;
+      return this.equals(ZERO_MASS);
     }
 
     @Override
