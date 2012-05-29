@@ -49,7 +49,7 @@ public class PowerInW extends AbstractScalar implements Power {
 
     @Override
     public double w() {
-        return this.w();
+        return this.w;
     }
 
     @Override
