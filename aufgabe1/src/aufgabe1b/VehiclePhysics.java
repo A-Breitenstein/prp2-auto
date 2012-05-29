@@ -47,12 +47,19 @@ public class VehiclePhysics {
    
    //ADT:: public void reset()
     public void reset(){
-        elapsedTime = timeDiffInS(0d);
-        traveledDistance = lengthInM(0d);
-        speed = speedInKmh(0d);
-        forceFinal = forceInN(0d);
+        elapsedTime = ZERO_TIMEDIFF;
+        traveledDistance = ZERO_LENGTH;
+        speed = ZERO_SPEED;
+        forceFinal = ZERO_FORCE;
+        accZentrifugal = ZERO_ACC;
+        forceDrag = ZERO_FORCE;
+        forceBrake = ZERO_FORCE;
+        forceBrakeCurveMax = ZERO_FORCE;
+        accFinal = ZERO_ACC;
+        accCurve = ZERO_ACC;
         tractionloss = false;
         tiresblocked = false;
+        
     }
     
    /*
@@ -72,7 +79,7 @@ public class VehiclePhysics {
         this.powerPropMax = powerPropMax;
         this.speedMax = speedMax;
         DRAG_CONST = Math.abs(powerPropMax.div(Math.pow(speedMax.mps(), 3)).w());
-        forceBrakeMax = forceInN(calcCineticEnergie_w(speed, mass));
+        forceBrakeMax = forceInN(calcCineticEnergie_w(speedMax, mass));
         setTractionLevel(NORMAL_TRACTION);
         reset();
     }
@@ -108,12 +115,13 @@ public class VehiclePhysics {
     }
     */
     
-    
+
     //ADT:: private void calcForceFinal_n(double level,double brakelevel,double controlAngleInRad)
     private void calcForceFinal_n(double level,double brakelevel,Angle controlAngle){
         Force forceProp, forcePropAbs, forceResultPropBrake;
         forcePropAbs = calcForcePropAbs_n(level);
         
+        System.out.println("Mass: "+mass+", AccZentrifugal: "+accZentrifugal);
         forceBrakeCurveMax = forceInN(Math.sqrt(
         forceInN(Math.pow(accZentrifugalMax.mul(mass).n(),2)).sub(forceInN(Math.pow(accZentrifugal.mul(mass).n(), 2))).n()
                                                 ));
@@ -167,6 +175,7 @@ public class VehiclePhysics {
     //ADT:: private void calcCinematic(double deltaTime_s, double force_n)
     private void calcCinematic(TimeDiff deltaTime, Force force){
         accFinal = force.div(mass);
+        System.out.println("accFinal: "+accFinal);
         speed = speed.add(accFinal.mul(deltaTime));
         traveledDistance = traveledDistance.add(lengthInM(Math.abs(speed.mps())*deltaTime.s()));
         elapsedTime = elapsedTime.add(deltaTime);
@@ -261,7 +270,7 @@ public class VehiclePhysics {
         private Acc calcZentrifugalAcc(Angle controlAngle){
             Acc accZentrifugal;
             if(controlAngle.isZero() || speed.isZero()){
-                accZentrifugal = accInMss(0d);
+                accZentrifugal = ZERO_ACC;
             }else{
                 Speed absSpeed = speedInMpS(Math.abs(speed.mps()));
                 Length kurvenRadius = lengthInM(absSpeed.div(Math.abs(controlAngle.rad())).mps());
@@ -330,7 +339,7 @@ public class VehiclePhysics {
                     forcePropAbs = forcePropMax;
                 }
                 else{
-                    forcePropAbs = forceInN(0d);
+                    forcePropAbs = ZERO_FORCE;
                 }
             }
      return forcePropAbs;
@@ -428,6 +437,7 @@ public class VehiclePhysics {
    
    //ADT:: public double getSpeed_ms()
    public double getSpeed_ms(){
+       System.out.println("getterspeed : "+speed.mps());
         return speed.mps();
    }
    /*
@@ -484,6 +494,20 @@ public class VehiclePhysics {
     
 
     
+    
+    public static void main(String[] args){
+        VehiclePhysics test = VehiclePhysics.create(massInKg(150), powerInW(300000d), speedInMpS(34));
+        test.step(1d/50d, 0.40, 0.0, 0.0);
+        for (int i = 0; i < 25; i++) {
+            test.step(1d/50d, 0.40, 0.0, 0.0);
+            System.out.println(test.speed + "runde "+i);
+            
+        }
+        System.out.println(test.powerPropMax);
+        
+        Power x = Values.powerInW(50);
+        
+    }
 }
     
 

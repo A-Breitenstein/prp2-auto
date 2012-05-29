@@ -49,7 +49,7 @@ public class PowerInW extends AbstractScalar implements Power {
 
     @Override
     public double w() {
-        return this.w;
+        return w;
     }
 
     @Override
@@ -91,6 +91,5 @@ public class PowerInW extends AbstractScalar implements Power {
     public Force div(Speed speed) {
         return ForceInN.valueOf(this.w()/speed.mps());
     } 
-    
     
 }
