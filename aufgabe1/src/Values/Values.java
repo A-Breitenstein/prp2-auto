@@ -51,8 +51,8 @@ public final class Values {
     public static Length lengthInM(double meters) {
         return LengthInM.valueOf(meters);
     }
-    public static Length lenghtInKm(double meters){
-        return LengthInM.toKm(meters);
+    public static Length lenghtInKm(double km){
+        return LengthInM.toKm(km);
     }
     public static Length lenghtInNm(double meters){
         return LengthInM.valueOf(LengthInM.valueOf(meters).nm());
@@ -94,8 +94,8 @@ public final class Values {
     public static Speed speedInMpS(double mps){
         return SpeedInMpS.valueOf(mps);
     }
-    public static Speed speedInKmh(double mps){
-        return SpeedInMpS.valueOf(SpeedInMpS.valueOf(mps).kmh());
+    public static Speed speedInKmh(double kmh){
+        return SpeedInMpS.valueOf(kmh/MPS_IN_KMH);
     }
     public static Speed speedInMph(double mps){
         return SpeedInMpS.valueOf(SpeedInMpS.valueOf(mps).mph());

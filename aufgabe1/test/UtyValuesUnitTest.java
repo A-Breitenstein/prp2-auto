@@ -40,7 +40,14 @@ public class UtyValuesUnitTest {
     //
     // @Test
     // public void hello() {}
-    
+    @Test
+    public void test_LengthInKm(){
+        Length l1, l2;
+        l1 = Values.lengthInM(10000);
+        l2 = Values.lenghtInKm(10);
+        
+        assertEquals(l1, l2);
+    }
         @Test
     public void test_SpeedInKmh(){
         //Speed speed = Values.speedInKmh(30);
@@ -62,8 +69,6 @@ public class UtyValuesUnitTest {
         
         assertTrue(!spo1.isZero());
         assertEquals(Values.speedInMpS(30), Values.speedInKmh(108));
-        
- 
         
     }
 }
