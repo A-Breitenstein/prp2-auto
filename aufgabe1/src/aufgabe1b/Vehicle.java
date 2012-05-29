@@ -1,9 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package aufgabe1b;
 
+import static Values.Values.*;
 /**
  *
  * @author Sven
@@ -39,7 +37,7 @@ public class Vehicle {
 
     private Vehicle(String name,double mass_kg, double powerPropMax_kw, double speedMax_kmh) {
         VEHICLE_NAME = name;
-        PhysicsModel = VehiclePhysics.create(mass_kg, powerPropMax_kw, speedMax_kmh);
+        PhysicsModel = VehiclePhysics.create(massInKg(mass_kg), powerInKW(powerPropMax_kw), speedInKmh(speedMax_kmh));
         reset();
     }
 
