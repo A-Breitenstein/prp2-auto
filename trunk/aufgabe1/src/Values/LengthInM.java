@@ -28,7 +28,7 @@ final class LengthInM extends AbstractScalar implements Length {
     
     @Override
     public boolean isZero() {
-        return this == ZERO_LENGTH;
+        return this.equals(ZERO_LENGTH);
     }
 
     @Override

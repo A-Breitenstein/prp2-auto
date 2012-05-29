@@ -22,7 +22,7 @@ public class TimeDiffInS extends AbstractScalar implements TimeDiff {
     
     @Override
     public boolean isZero() {
-        return this == ZERO_TIMEDIFF;
+        return this.equals(ZERO_TIMEDIFF);
     }
 
     @Override

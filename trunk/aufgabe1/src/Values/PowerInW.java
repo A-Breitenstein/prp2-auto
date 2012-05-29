@@ -34,7 +34,7 @@ public class PowerInW extends AbstractScalar implements Power {
 
     @Override
     public boolean isZero() {
-        return this == ZERO_POWER;
+        return this.equals(ZERO_POWER);
     }
 
     @Override

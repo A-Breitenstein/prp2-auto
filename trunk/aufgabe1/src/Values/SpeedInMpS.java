@@ -41,7 +41,7 @@ public class SpeedInMpS extends AbstractScalar implements Speed {
 
     @Override
     public boolean isZero() {
-        return  this == ZERO_SPEED;
+        return  this.equals(ZERO_SPEED);
     }
 
     @Override

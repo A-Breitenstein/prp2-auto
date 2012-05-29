@@ -38,7 +38,7 @@ public class ForceInN extends AbstractScalar implements Force {
 
     @Override
     public boolean isZero() {
-        return this == ZERO_FORCE;
+        return this.equals(ZERO_FORCE);
     }
 
     @Override

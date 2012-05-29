@@ -35,7 +35,7 @@ public class AccInMss extends AbstractScalar implements Acc {
 
     @Override
     public boolean isZero() {
-        return this == ZERO_ACC;
+        return this.equals(ZERO_ACC);
     }
 
     @Override
