@@ -408,7 +408,9 @@ public class VehiclePhysics {
     //ADT:: public void setTractionLevel(double TractionLevel)
     public void setTractionLevel(double TractionLevel) {
         Acc tractionAcc = accInMss(ACC_EARTH * TractionLevel);
-        forcePropMax = forceInKN(mass.mul(tractionAcc.mss()).kg());
+       //hier ist der fehler ---###---##---##---
+       //forcePropMax = forceIn->K<-N(mass.mul(tractionAcc.mss()).kg());
+        forcePropMax = forceInN(mass.mul(tractionAcc.mss()).kg());
         accZentrifugalMax = tractionAcc;
     }
    
@@ -496,16 +498,15 @@ public class VehiclePhysics {
     
     
     public static void main(String[] args){
-        VehiclePhysics test = VehiclePhysics.create(massInKg(150), powerInW(300000d), speedInMpS(34));
-        test.step(1d/50d, 0.40, 0.0, 0.0);
+        VehiclePhysics test = VehiclePhysics.create(massInKg(1445), powerInW(300000d), speedInMpS(330d/3.6d));
+        
         for (int i = 0; i < 25; i++) {
             test.step(1d/50d, 0.40, 0.0, 0.0);
-            System.out.println(test.speed + "runde "+i);
+            System.out.println("speed: "+test.speed.kmh() + "runde "+i);
             
         }
         System.out.println(test.powerPropMax);
         
-        Power x = Values.powerInW(50);
         
     }
 }
