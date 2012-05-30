@@ -1,6 +1,7 @@
 
 package aufgabe1b;
 
+import Values.Angle;
 import static Values.Values.*;
 /**
  *
@@ -11,13 +12,13 @@ public class Vehicle {
     //MEMBER VAR`S------------------------------------------------------------------
 
     private int currentTractionL;
-    private double level,brakeLevel, 
-                   posAngle_rad, controlAngle_deg; 
+    private double level,brakeLevel;
+    public Angle posAngle, controlAngle; 
           
     //zu zwecken public
     public VehiclePhysics PhysicsModel;
     
-    private final String VEHICLE_NAME;       
+    public final String VEHICLE_NAME;       
     private Vector2d vecPos_m;
     private Vector2d[] estimatedLineOfMovement = new Vector2d[4];
 
@@ -69,15 +70,15 @@ public class Vehicle {
     public void step(double deltaTime_s) {
         System.out.println("-|-|-VeicleStep-|-|-");
         throttleControl();
-        PhysicsModel.step(deltaTime_s, level,brakeLevel,getControlAngleInRad());
+        PhysicsModel.step(deltaTime_s, level,brakeLevel,controlAngle);
         
         
         if (PhysicsModel.tiresArentBlockedAndSpeedisNotNull()) {
-            posAngle_rad += getControlAngleInRad() * deltaTime_s;
+            posAngle = posAngle.add(controlAngle.mul(deltaTime_s));
         }
-        posAngle_rad = PosAngleRad_overflowCorrection(posAngle_rad);
-        vecPos_m = calcDisplayPosition(deltaTime_s,posAngle_rad,PhysicsModel.getSpeed_ms(),vecPos_m);
-        estimatedLineOfMovement = forecastLine(vecPos_m.x,vecPos_m.y, PhysicsModel.getSpeed_ms(), deltaTime_s,posAngle_rad,getControlAngleInRad());
+        posAngle = PosAngleRad_overflowCorrection(posAngle.rad());
+        vecPos_m = calcDisplayPosition(deltaTime_s,posAngle.rad(),PhysicsModel.getSpeed_ms(),vecPos_m);
+        estimatedLineOfMovement = forecastLine(vecPos_m.x,vecPos_m.y, PhysicsModel.getSpeed_ms(), deltaTime_s,posAngle.rad(),controlAngle.rad());
 
     }
     
@@ -87,8 +88,8 @@ public class Vehicle {
         level = 0;
         brakeLevel = 0;
         vecPos_m = Vector2d.new_(200, 145);
-        posAngle_rad = 0;
-        controlAngle_deg = 0;
+        posAngle = ZERO_ANGLE;
+        controlAngle = ZERO_ANGLE;
     }
 
     
@@ -128,14 +129,14 @@ public class Vehicle {
     }
     
    public void turnLeft() {
-        if (controlAngle_deg < MAX_CONTROL_ANGLE_DEG) {
-            controlAngle_deg += 1d;
+        if (controlAngle.deg() < MAX_CONTROL_ANGLE_DEG) {
+            controlAngle = controlAngle.add(angleInDeg(1d));
         }
     }
 
     public void turnRight() {
-        if (controlAngle_deg > -MAX_CONTROL_ANGLE_DEG) {
-            controlAngle_deg -= 1d;
+        if (controlAngle.deg() > -MAX_CONTROL_ANGLE_DEG) {
+           controlAngle = controlAngle.sub(angleInDeg(1d));
         }
     }
     
@@ -168,13 +169,9 @@ public class Vehicle {
     
   
     //GETTERS ------------------------------------------------
-    public double getControlAngleInRad() {
-        return (controlAngle_deg / 180) * Math.PI;
-    }
 
-    public double getControlAngleInDeg() {
-        return controlAngle_deg;
-    }
+
+
     
     public Vector2d getVecPos_m() {
         return vecPos_m;
@@ -187,7 +184,7 @@ public class Vehicle {
         return PhysicsModel.getAccBrake_mss();
     }
     public boolean isKurvenMaxAccNearlyReached(){
-        return PhysicsModel.isKurvenMaxAccNearlyReached(controlAngle_deg);
+        return PhysicsModel.isKurvenMaxAccNearlyReached(controlAngle.rad());
     }
     
     public Vector2d[] getEstimatedLineOfMovement() {
@@ -196,9 +193,6 @@ public class Vehicle {
    public boolean isTractionloss() {
         return PhysicsModel.isTractionloss();
     }
-   public double getPosAngleRad(){
-       return posAngle_rad;
-   }
    public double getSpeedInKmh(){
      return  PhysicsModel.getSpeed_ms()*3.6;
    }
@@ -209,10 +203,10 @@ public class Vehicle {
     
     //GRAPHIC OPERATIONS ----------------------------------------------------
     
-    private double PosAngleRad_overflowCorrection(double posAngle_rad){
+    private Angle PosAngleRad_overflowCorrection(double posAngle_rad){
             posAngle_rad = (posAngle_rad >= (Math.PI)) ? ( (Math.PI-(posAngle_rad % Math.PI))*-1) : (posAngle_rad);
             posAngle_rad = ( posAngle_rad <= -(Math.PI))?((Math.PI+(posAngle_rad % Math.PI))*1):(posAngle_rad);
-            return posAngle_rad;
+            return angleInRad(posAngle_rad);
     }
    
      private Vector2d calcDisplayPosition(double deltaTime_s,double posAngle_rad,double speed_ms,Vector2d vecOldPos){

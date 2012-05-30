@@ -108,7 +108,7 @@ public final class Values {
         return AngleInRad.valueOf(rad); 
     }
     public static Angle angleInDeg(double deg){
-        return AngleInRad.valueOf(AngleInRad.valueOf(deg).deg());
+        return AngleInRad.valueOf((deg/180d) *Math.PI);
     }
     
     //Power-untis
