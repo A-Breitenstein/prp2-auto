@@ -84,7 +84,7 @@ public final class Values {
         return MassInKg.valueOf(t*KG_IN_TONS);
     }
     public static Mass massInG(double g){
-        return MassInKg.valueOf(g/KG_IN_GRAMM);
+        return MassInKg.valueOf(g*KG_IN_GRAMM);
     }
     public static Mass massInLbs(double lbs){
         return MassInKg.valueOf(lbs*KG_IN_POUNDS);
@@ -116,7 +116,7 @@ public final class Values {
         return PowerInW.valueOf(w); 
     }
     public static Power powerInKW(double kw){
-        return PowerInW.valueOf(PowerInW.valueOf(kw).kw());
+        return PowerInW.valueOf(kw*W_IN_KW);
     }
     public static Power powerInJs(double js){
         return PowerInW.valueOf(PowerInW.valueOf(js).js());
@@ -127,7 +127,7 @@ public final class Values {
        return ForceInN.valueOf(n);
     }
     public static Force forceInKN(double kN){
-        return ForceInN.valueOf(ForceInN.valueOf(kN).kn());
+        return ForceInN.valueOf(kN*NEWTON_IN_KNEWTON);
     }
     
     //Acc-unit

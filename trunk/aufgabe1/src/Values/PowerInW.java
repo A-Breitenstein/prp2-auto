@@ -44,7 +44,7 @@ public class PowerInW extends AbstractScalar implements Power {
 
     @Override
     public double kw() {
-        return this.w()*W_IN_KW;
+        return this.w()/W_IN_KW;
     }
 
     @Override
