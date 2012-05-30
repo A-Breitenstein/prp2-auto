@@ -81,7 +81,7 @@ public final class Values {
         return MassInKg.valueOf(kg);
     }
     public static Mass massInT(double t){
-        return MassInKg.valueOf(t/KG_IN_TONS);
+        return MassInKg.valueOf(t*KG_IN_TONS);
     }
     public static Mass massInG(double g){
         return MassInKg.valueOf(g/KG_IN_GRAMM);
