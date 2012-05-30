@@ -1,4 +1,4 @@
-/*
+﻿/*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -99,6 +99,9 @@ public class UtyValuesUnitTest {
     Mass m1,m2,m3,m4;
     @Test
     public void test_massInKg(){
+		m1 = Values.massInKg(1);
+		m2 = Values.massInKg(1);
+		assertEquals(m1,m2);
     }
     @Test
     public void test_massInT(){
@@ -168,5 +171,14 @@ public class UtyValuesUnitTest {
     //Acc-unit
     Acc acc1,acc2,acc3,acc4;
     public void test_accInMss(){
+        acc1 = Values.accInMss(5);
+        acc2 = Values.accInMss(5);
+        acc3 = Values.accInMss(10);
+        
+        assertEquals(acc1, acc2);
+        assertEquals(acc3, acc1.add(acc2));
+        assertEquals(acc2, acc3.sub(acc1));
+        assertEquals(acc3, acc1.mul(2));
+        
     }
 }
