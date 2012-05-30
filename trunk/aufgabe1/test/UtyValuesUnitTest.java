@@ -6,6 +6,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import Values.*;
+import com.sun.corba.se.spi.extension.ZeroPortPolicy;
 
 /**
  *
@@ -92,29 +93,72 @@ public class UtyValuesUnitTest {
         assertEquals(tD4, tD3);   
     }
     //Mass-units
-    Mass m1,m2,m3,m4;
+    Mass m1,m2,m3,m4,m5,m6,m7;
     @Test
     public void test_massInKg(){
 	m1 = Values.massInKg(1);
 	m2 = Values.massInKg(1);
+        m3 = Values.massInKg(500);
+        m4 = Values.massInKg(2500);
+        m5 = Values.massInKg(501);
+        m6 = Values.massInKg(2000);
+        m7 = Values.ZERO_MASS;
 	assertEquals(m1,m2);
+        assertEquals(m4, m3.mul(5));
+        assertEquals(m3, m4.div(5));
+        assertEquals(m5, m1.add(m3));
+        assertEquals(m6, m4.sub(m3));
+        assertTrue(m7.isZero());
+        assertTrue("500,00".equals(m3.toString()));
     }
     @Test
     public void test_massInT(){
         m1 = Values.massInKg(1000);
 	m2 = Values.massInT(1);
+        m3 = Values.massInT(0.5);
+        m4 = Values.massInT(2.5);
+        m5 = Values.massInT(1.5);
+        m6 = Values.massInT(2);
+        m7 = Values.ZERO_MASS;
+        assertEquals(m4, m3.mul(5));
+        assertEquals(m3, m4.div(5));
+        assertEquals(m5, m1.add(m3));
+        assertEquals(m6, m4.sub(m3));
+        assertTrue(m7.isZero());
+        assertTrue("2500,00".equals(m4.toString()));
 	assertEquals(m1,m2);
     }
     @Test
     public void test_massInG(){
         m1 = Values.massInKg(1);
 	m2 = Values.massInG(1000);
+        m3 = Values.massInG(500);
+        m4 = Values.massInG(2500);
+        m5 = Values.massInG(501);
+        m6 = Values.massInG(2000);
+        assertEquals(m4, m3.mul(5));
+        assertEquals(m3, m4.div(5));
+        assertEquals(m5, m1.add(m3));
+        assertEquals(m6, m4.sub(m3));
+        assertTrue(m7.isZero());
+        assertTrue("0,50".equals(m3.toString()));
 	assertEquals(m1,m2);
     }
     @Test
     public void test_massInLbs(){
         m1 = Values.massInKg(1);
-	m2 = Values.massInLbs(1);
+	m2 = Values.massInLbs(2.20462262);
+        m3 = Values.massInLbs(1102.31131);
+        m4 = Values.massInLbs(5511.55655);
+        m5 = Values.massInLbs(1104.51593262);
+        m6 = Values.massInLbs(4409.24524);
+        m7 = Values.ZERO_MASS;
+        assertEquals(m4, m3.mul(5));
+        assertEquals(m3, m4.div(5));
+        assertEquals(m5, m1.add(m3));
+        assertEquals(m6, m4.sub(m3));
+        assertTrue(m7.isZero());
+        assertTrue("500,00".equals(m3.toString()));
 	assertEquals(m1,m2);
     }
     
@@ -151,9 +195,14 @@ public class UtyValuesUnitTest {
     }
     
     //Angle-units
-    Angle a1,a2,a3,a4;
+    Angle a1,a2,a3,a4,a5,a6,a7;
     @Test
     public void test_angleInRad(){
+        a1 = Values.angleInRad(1);
+        a2 = Values.angleInRad(1);
+        a3 = Values.angleInRad(30);
+        a4 = Values.angleInRad(60);
+        a5 = Values.angleInRad(90);
     }
     @Test
     public void test_angleInDeg(){
