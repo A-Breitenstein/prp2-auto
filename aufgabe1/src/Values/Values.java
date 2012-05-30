@@ -54,25 +54,25 @@ public final class Values {
     public static Length lenghtInKm(double km){
         return LengthInM.toKm(km);
     }
-    public static Length lenghtInNm(double meters){
-        return LengthInM.valueOf(LengthInM.valueOf(meters).nm());
+    public static Length lenghtInNm(double nauticMiles){
+        return LengthInM.valueOf((nauticMiles/METERS_IN_NM));
     }
     public static Length lenghtInFt(double meters){
-        return LengthInM.valueOf(LengthInM.valueOf(meters).ft());
+        return LengthInM.valueOf(meters*FEET_IN_METERS);
     }
     
     //TimeDiff-units
     public static TimeDiff timeDiffInS(double seconds){
         return TimeDiffInS.valueOf(seconds);
     }
-    public static TimeDiff timeDiffInM(double seconds){
-        return TimeDiffInS.valueOf(TimeDiffInS.valueOf(seconds).m());
+    public static TimeDiff timeDiffInM(double minutes){
+        return TimeDiffInS.valueOf(minutes*SECONDS_IN_MINUTES);
     }    
-    public static TimeDiff timeDiffInH(double seconds){
-        return TimeDiffInS.valueOf(TimeDiffInS.valueOf(seconds).h());
+    public static TimeDiff timeDiffInH(double hours){
+        return TimeDiffInS.valueOf(hours*SECONDS_IN_HOURS);
     }
-    public static TimeDiff timeDiffInMs(double seconds){
-        return TimeDiffInS.valueOf(TimeDiffInS.valueOf(seconds).ms());
+    public static TimeDiff timeDiffInMs(double ms){
+        return TimeDiffInS.valueOf(TimeDiffInS.valueOf(ms).ms());
     }  
     
     

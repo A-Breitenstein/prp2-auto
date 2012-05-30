@@ -40,6 +40,8 @@ public class UtyValuesUnitTest {
     //
     // @Test
     // public void hello() {}
+    
+    //Length-units
     @Test
     public void test_LengthInKm(){
         Length l1, l2;
@@ -48,7 +50,69 @@ public class UtyValuesUnitTest {
         
         assertEquals(l1, l2);
     }
-        @Test
+    @Test
+    public void test_lenghtInNm(){
+        Length l1, l2;
+        l1 = Values.lengthInM(1);
+        l2 = Values.lenghtInNm(0.000539956803);
+        
+        assertEquals(l1,l2);
+    }
+    @Test
+    public void test_lenghtInFt(){
+        Length l1, l2;
+        l1 = Values.lengthInM(1);
+        l2 = Values.lenghtInFt(3.2808399);
+        assertEquals(l1, l2);
+    }
+    
+    //TimeDiff-units
+    TimeDiff tD,tD2,tD3,tD4;
+    @Test
+    public void test_timeDiffInS(){
+        tD = Values.timeDiffInS(1);
+        tD2 = Values.timeDiffInS(1);
+        assertEquals(tD, tD2);
+    }
+    @Test
+    public void test_timeDiffInM(){
+        tD = Values.timeDiffInS(60);
+        tD2 = Values.timeDiffInM(1);
+        assertEquals(tD, tD2);
+    }
+    @Test
+    public void test_timeDiffInH(){
+        tD = Values.timeDiffInS(3600);
+        tD2 = Values.timeDiffInH(1);
+        assertEquals(tD, tD2);
+    }
+    @Test
+    public void test_timeDiffInMs(){
+        tD = Values.timeDiffInS(1);
+        tD2 = Values.timeDiffInMs(1000);
+        tD4 = Values.timeDiffInS(3);
+        tD3 = Values.timeDiffInMs(3000);
+        assertEquals(tD, tD2);
+        assertEquals(tD4, tD3);   
+    }
+    //Mass-units
+    Mass m1,m2,m3,m4;
+    @Test
+    public void test_massInKg(){
+    }
+    @Test
+    public void test_massInT(){
+    }
+    @Test
+    public void test_massInG(){
+    }
+    @Test
+    public void test_massInLbs(){
+    }
+    
+    //Speed-units
+    Speed s1,s2,s3,s4;
+    @Test
     public void test_SpeedInKmh(){
         //Speed speed = Values.speedInKmh(30);
         System.out.println("hallo test");
@@ -69,6 +133,40 @@ public class UtyValuesUnitTest {
         
         assertTrue(!spo1.isZero());
         assertEquals(Values.speedInMpS(30), Values.speedInKmh(108));
-        
+    }
+    
+    @Test    
+    public void test_speedInMph(){    
+    }
+    @Test
+    public void test_speedInKn(){    
+    }
+    
+    //Angle-units
+    Angle a1,a2,a3,a4;
+    public void test_angleInRad(){
+    }
+    public void test_angleInDeg(){
+    }
+    
+    //Power-untis
+    Power p1,p2,p3,p4;
+    public void test_powerInW(){
+    }
+    public void test_powerInKW(){
+    }
+    public void test_powerInJs(){
+    }
+    
+    //Force-unit
+    Force f1,f2,f3,f4;
+    public void test_forceInN(){
+    }
+    public void test_forceInKN(){
+    }
+    
+    //Acc-unit
+    Acc acc1,acc2,acc3,acc4;
+    public void test_accInMss(){
     }
 }
