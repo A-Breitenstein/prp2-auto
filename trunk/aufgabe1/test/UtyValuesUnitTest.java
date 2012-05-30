@@ -95,18 +95,27 @@ public class UtyValuesUnitTest {
     Mass m1,m2,m3,m4;
     @Test
     public void test_massInKg(){
-		m1 = Values.massInKg(1);
-		m2 = Values.massInKg(1);
-		assertEquals(m1,m2);
+	m1 = Values.massInKg(1);
+	m2 = Values.massInKg(1);
+	assertEquals(m1,m2);
     }
     @Test
     public void test_massInT(){
+        m1 = Values.massInKg(1000);
+	m2 = Values.massInT(1);
+	assertEquals(m1,m2);
     }
     @Test
     public void test_massInG(){
+        m1 = Values.massInKg(1);
+	m2 = Values.massInG(1000);
+	assertEquals(m1,m2);
     }
     @Test
     public void test_massInLbs(){
+        m1 = Values.massInKg(1);
+	m2 = Values.massInLbs(1);
+	assertEquals(m1,m2);
     }
     
     //Speed-units
@@ -143,17 +152,22 @@ public class UtyValuesUnitTest {
     
     //Angle-units
     Angle a1,a2,a3,a4;
+    @Test
     public void test_angleInRad(){
     }
+    @Test
     public void test_angleInDeg(){
     }
     
     //Power-untis
     Power p1,p2,p3,p4;
+    @Test
     public void test_powerInW(){
     }
+    @Test
     public void test_powerInKW(){
     }
+    @Test
     public void test_powerInJs(){
     }
     
@@ -171,11 +185,13 @@ public class UtyValuesUnitTest {
         assertEquals(f1, f3.div(2));
         assertEquals(f1, f2.mul(Values.speedInMpS(5)));
     }
+    @Test
     public void test_forceInKN(){
     }
     
     //Acc-unit
     Acc acc1,acc2,acc3,acc4;
+    @Test
     public void test_accInMss(){
         acc1 = Values.accInMss(5);
         acc2 = Values.accInMss(5);
