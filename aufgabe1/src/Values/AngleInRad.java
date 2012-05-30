@@ -53,7 +53,7 @@ public final class AngleInRad extends AbstractScalar implements Angle {
 
     @Override
     public double deg() {
-        return this.rad() * RAD_IN_DEG;
+        return (this.rad()/Math.PI)*180;
     }
 
     @Override
@@ -95,6 +95,10 @@ public final class AngleInRad extends AbstractScalar implements Angle {
     public Angle mul(TimeDiff timediff) {
         return this.mul(timediff.s());
     }
-
+    public static void main(String[] args) {
+        Angle x = angleInDeg(180);
+        Angle y = angleInRad(3.14);
+        System.out.println(x+"  "+y.deg());
+    }
     
 }

@@ -284,35 +284,35 @@ public class MainClass extends JGEngine {
 
     private void drawUI() {
         setColor(JGColor.green);
-        drawString("ElapsedTime_sec: " + vehicle.PhysicsModel.elapsedTime_s, UI_X + 50, UI_Y - 530, 0);
+        drawString("ElapsedTime_sec: " + vehicle.PhysicsModel.elapsedTime, UI_X + 25, UI_Y - 530, 0);
         drawString("Bodenbelag: " + bodenBelag, UI_X - 550, UI_Y + 50, 0);
         drawString("BrakeLevel:" + Math.round(car_array[0].getBrakeLevel() * 100), UI_X - 450, UI_Y + 20, 0);
         drawString(car_array[0].getASR_ABS_status(), UI_X - 250, UI_Y + 50, 0);
-        drawString("ControlAngleDeg: " + vehicle.getControlAngleInDeg(), UI_X - 250, UI_Y + 20, 0);
-        drawString("KurvenMaxSpeed: " + Math.round(car_array[0].getKurvenMaxSpeedinKmh()) + "kmh", UI_X, UI_Y - 10, 0);
-        drawString("ZentrifugalAcc: " + Math.round(vehicle.PhysicsModel.accZentrifugal_mss) + "m/ss", UI_X, UI_Y + 10, 0);
-        drawString("KurvenRadius: " + Math.round(car_array[0].getKurvenRadiusInM()) + "m", UI_X, UI_Y + 30, 0);
-        drawString("KurvenBrakeForceMax: " + Math.round(vehicle.PhysicsModel.forceBrakeCurveMax_n) + " n", UI_X, UI_Y + 50, 0);
+        drawString("ControlAngleDeg: " + vehicle.controlAngle, UI_X - 250, UI_Y + 20, 0);
+        drawString("KurvenMaxSpeed: " + vehicle.PhysicsModel.curveSpeedMax + "kmh", UI_X, UI_Y - 10, 0);
+        drawString("ZentrifugalAcc: " + vehicle.PhysicsModel.accZentrifugal + "m/ss", UI_X, UI_Y + 10, 0);
+        drawString("KurvenRadius: " + vehicle.PhysicsModel.curveRadian + "m", UI_X, UI_Y + 30, 0);
+        drawString("KurvenBrakeForceMax: " + vehicle.PhysicsModel.forceBrakeCurveMax + " n", UI_X, UI_Y + 50, 0);
 
         double x_pos = 150;
         double y_pos = 50;
-        drawString(nameArray.get(0), x_pos - X_STRING_OFFSET, y_pos + (Y_STRING_OFFSET * -2), 0);
+        drawString(vehicle.VEHICLE_NAME, x_pos - X_STRING_OFFSET, y_pos + (Y_STRING_OFFSET * -2), 0);
         drawString("speed:" + Math.round(vehicle.getSpeedInKmh()) + " Km/h",
                 x_pos - X_STRING_OFFSET, y_pos + (Y_STRING_OFFSET * -1), 0);
         drawString("level: " + Math.round(vehicle.getLevelInPercent()) + " %",
                 x_pos - X_STRING_OFFSET, y_pos + (Y_STRING_OFFSET * 0), 0);
-        drawString("acc:" + Math.round(vehicle.PhysicsModel.accFinal_mss) + " m/s²",
+        drawString("acc:" + (vehicle.PhysicsModel.accFinal) + " m/s²",
                 x_pos - X_STRING_OFFSET, y_pos + (Y_STRING_OFFSET * 1), 0);
-        drawString("force:" + Math.round(vehicle.PhysicsModel.forceFinal_n) + " N",
+        drawString("force:" + (vehicle.PhysicsModel.forceFinal) + " N",
                 x_pos - X_STRING_OFFSET, y_pos + (Y_STRING_OFFSET * 2), 0);
-        drawString("dforce:" + Math.round(vehicle.PhysicsModel.forceDrag_n) + " N",
+        drawString("dforce:" + (vehicle.PhysicsModel.forceDrag) + " N",
                 x_pos - X_STRING_OFFSET, y_pos + (Y_STRING_OFFSET * 3), 0);
-        drawString("" + Math.round(vehicle.PhysicsModel.traveledDistance_m) + "m",
+        drawString("" + (vehicle.PhysicsModel.traveledDistance) + "m",
                 x_pos - X_STRING_OFFSET, y_pos + (Y_STRING_OFFSET * 4), 0);
 
-        drawString("AccKurve: " + Math.round(vehicle.PhysicsModel.accCurve_mss) + "m/s²",
+        drawString("AccKurve: " + (vehicle.PhysicsModel.accCurve) + "m/s²",
                 x_pos - X_STRING_OFFSET, y_pos + (Y_STRING_OFFSET * 5), 0);
-        drawString("PosAngle: " + vehicle.getPosAngleRad() + "rad",
+        drawString("PosAngle: " + String.format("%.2f",vehicle.posAngle.deg()) + "deg",
                 x_pos - X_STRING_OFFSET, y_pos + (Y_STRING_OFFSET * 6), 0);
 
 
@@ -374,19 +374,19 @@ public class MainClass extends JGEngine {
         double worldpos_x = car.getVecPos_m().x;
         double worldpos_y = car.getVecPos_m().y;
         double[][] scaled_model = scale_model(auto_x, auto_y, 1.0d);
-        double[][] rotated_model = apply_rotation_z_axies(scaled_model[0], scaled_model[1], car.getPosAngleRad());
+        double[][] rotated_model = apply_rotation_z_axies(scaled_model[0], scaled_model[1], car.posAngle.rad());
         double[][] world_space = add_position(rotated_model[0], rotated_model[1], worldpos_x, worldpos_y);
         drawPolygon(world_space[0], world_space[1], null, 5, true, true);
         //LINKER REIFEN TRANSFORMATIOn
         scaled_model = scale_model(rad_x, rad_y, 1.0d);
         double[][] model_space = add_position(scaled_model[0], scaled_model[1], 20, -10);
-        rotated_model = apply_rotation_z_axies(model_space[0], model_space[1], car.getPosAngleRad() + car.getControlAngleInRad());
+        rotated_model = apply_rotation_z_axies(model_space[0], model_space[1], car.posAngle.rad() + car.controlAngle.rad());
         world_space = add_position(rotated_model[0], rotated_model[1], worldpos_x, worldpos_y);
         drawPolygon(world_space[0], world_space[1], null, 4, true, true);
         //RECHTER REIFEN TRANSFORMATION
         scaled_model = scale_model(rad_x, rad_y, 1.0d);
         model_space = add_position(scaled_model[0], scaled_model[1], 20, 10);
-        rotated_model = apply_rotation_z_axies(model_space[0], model_space[1], car.getPosAngleRad() + car.getControlAngleInRad());
+        rotated_model = apply_rotation_z_axies(model_space[0], model_space[1], car.posAngle.rad() + car.controlAngle.rad());
         world_space = add_position(rotated_model[0], rotated_model[1], worldpos_x, worldpos_y);
         drawPolygon(world_space[0], world_space[1], null, 4, true, true);
     }

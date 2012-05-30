@@ -209,10 +209,10 @@ public class UtyValuesUnitTest {
         assertEquals(a1, a2);
         assertEquals(a5, a3.add(a4));
         assertEquals(a4, a6.sub(a3).sub(a3));
-        assertEquals(a6, a3.mul(2));
+        assertEquals(a4, a3.mul(2));
         assertEquals(a3, a6.div(4));
         assertEquals(Values.angleInRad(1200), a3.mul(tD1));
-        assertTrue("60.00".equals(a4.toString()));
+        assertTrue("60,00".equals(a4.toString()));
         assertTrue(a7.isZero());
     }
     @Test
