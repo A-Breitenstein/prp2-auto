@@ -1,7 +1,3 @@
-﻿/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -164,6 +160,16 @@ public class UtyValuesUnitTest {
     //Force-unit
     Force f1,f2,f3,f4;
     public void test_forceInN(){
+        f1 = Values.forceInN(500);
+        f2 = Values.forceInN(500);
+        f3 = Values.forceInN(1000);
+        
+        assertEquals(f1, f2);
+        assertEquals(f3, f2.add(f1));
+        assertEquals(f1, f3.sub(f2));
+        assertEquals(f3, f2.mul(2));
+        assertEquals(f1, f3.div(2));
+        assertEquals(f1, f2.mul(Values.speedInMpS(5)));
     }
     public void test_forceInKN(){
     }
@@ -179,6 +185,13 @@ public class UtyValuesUnitTest {
         assertEquals(acc3, acc1.add(acc2));
         assertEquals(acc2, acc3.sub(acc1));
         assertEquals(acc3, acc1.mul(2));
+        assertEquals(acc1,acc3.div(2));
+        
+        assertTrue(acc1.compareTo(acc2) == 0);
+        assertTrue(acc1.compareTo(acc3) == -1);
+        assertTrue(acc3.compareTo(acc1) == 1);
+        
+        assertTrue(acc1.equals(acc1));
         
     }
 }
