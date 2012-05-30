@@ -44,14 +44,13 @@ public class MainClass extends JGEngine {
     HashMap optionalConfig = new HashMap();
     //KeyControl::
     
-    //private double[] auto_x = {-12d , -10d , -10d , -6d , -5d , -4d , -2d , 2d , 5d , 8d , 8d ,   10d , 10d , 11d , 11d , 12d ,  11d , 11d , 10d , 10d ,    8d ,   8d ,  5d , 2d ,  -2d , -4d , -5d , -6d , -10d , -10d , -12d };
-    //private double[] auto_y = { 3d  , 3d ,   1d ,    1d ,  2d ,  2d ,  4d , 4d , 1d , 1d , 0.5d , 0.5d , 3d , 3d , 0.5d , 0d , -0.5d , -3d , -3d ,-0.5d , -0.5d , -1d , -1d , -4d , -4d , -2d , -2d , -1d ,  -1d ,  -3d ,   -3d};
     private String bodenBelag = "Kein";
 
     public void changeTraction(int k) {
         for (int i = 0; i < car_array.length; i++) {
             car_array[i].setCurrentTractionL(k);
         }
+        vehicle.setCurrentTractionL(k);
     }
 
     //Control+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -228,8 +227,6 @@ public class MainClass extends JGEngine {
     public void paintFrame() {
 
         drawUI();
-                drawString("speed:" + Math.round(vehicle.getSpeedInKmh()) + " Km/h",
-                vehicle.getVecPos_m().x - X_STRING_OFFSET, vehicle.getVecPos_m().y + (Y_STRING_OFFSET * -1), 0);
         drawPolygonVehicle(vehicle);
         drawPolygonCar(car_array[0]);
         drawPolygonCar(car_array[1]);
@@ -286,10 +283,10 @@ public class MainClass extends JGEngine {
         setColor(JGColor.green);
         drawString("ElapsedTime_sec: " + vehicle.PhysicsModel.elapsedTime, UI_X + 25, UI_Y - 530, 0);
         drawString("Bodenbelag: " + bodenBelag, UI_X - 550, UI_Y + 50, 0);
-        drawString("BrakeLevel:" + Math.round(car_array[0].getBrakeLevel() * 100), UI_X - 450, UI_Y + 20, 0);
+        drawString("BrakeLevel:" + formatDouble(car_array[0].getBrakeLevel() * 100), UI_X - 450, UI_Y + 20, 0);
         drawString(car_array[0].getASR_ABS_status(), UI_X - 250, UI_Y + 50, 0);
-        drawString("ControlAngleDeg: " + vehicle.controlAngle, UI_X - 250, UI_Y + 20, 0);
-        drawString("KurvenMaxSpeed: " + vehicle.PhysicsModel.curveSpeedMax + "kmh", UI_X, UI_Y - 10, 0);
+        drawString("ControlAngleDeg: " + formatDouble(vehicle.controlAngle.deg()), UI_X - 250, UI_Y + 20, 0);
+        drawString("KurvenMaxSpeed: " + formatDouble(vehicle.PhysicsModel.curveSpeedMax.kmh()) + "kmh", UI_X, UI_Y - 10, 0);
         drawString("ZentrifugalAcc: " + vehicle.PhysicsModel.accZentrifugal + "m/ss", UI_X, UI_Y + 10, 0);
         drawString("KurvenRadius: " + vehicle.PhysicsModel.curveRadian + "m", UI_X, UI_Y + 30, 0);
         drawString("KurvenBrakeForceMax: " + vehicle.PhysicsModel.forceBrakeCurveMax + " n", UI_X, UI_Y + 50, 0);
@@ -297,9 +294,9 @@ public class MainClass extends JGEngine {
         double x_pos = 150;
         double y_pos = 50;
         drawString(vehicle.VEHICLE_NAME, x_pos - X_STRING_OFFSET, y_pos + (Y_STRING_OFFSET * -2), 0);
-        drawString("speed:" + Math.round(vehicle.getSpeedInKmh()) + " Km/h",
+        drawString("speed:" + formatDouble(vehicle.getSpeedInKmh()) + " Km/h",
                 x_pos - X_STRING_OFFSET, y_pos + (Y_STRING_OFFSET * -1), 0);
-        drawString("level: " + Math.round(vehicle.getLevelInPercent()) + " %",
+        drawString("level: " + formatDouble(vehicle.getLevelInPercent()) + " %",
                 x_pos - X_STRING_OFFSET, y_pos + (Y_STRING_OFFSET * 0), 0);
         drawString("acc:" + (vehicle.PhysicsModel.accFinal) + " m/s²",
                 x_pos - X_STRING_OFFSET, y_pos + (Y_STRING_OFFSET * 1), 0);
@@ -312,7 +309,7 @@ public class MainClass extends JGEngine {
 
         drawString("AccKurve: " + (vehicle.PhysicsModel.accCurve) + "m/s²",
                 x_pos - X_STRING_OFFSET, y_pos + (Y_STRING_OFFSET * 5), 0);
-        drawString("PosAngle: " + String.format("%.2f",vehicle.posAngle.deg()) + "deg",
+        drawString("PosAngle: " + formatDouble(vehicle.posAngle.deg()) + " deg",
                 x_pos - X_STRING_OFFSET, y_pos + (Y_STRING_OFFSET * 6), 0);
 
 
@@ -406,7 +403,9 @@ public class MainClass extends JGEngine {
         }
     
     }
-    
+   public String formatDouble(double d){
+       return String.format("%.2f", d);
+   } 
     
     
 }

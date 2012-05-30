@@ -40,6 +40,7 @@ public class Vehicle {
         VEHICLE_NAME = name;
         PhysicsModel = VehiclePhysics.create(massInKg(mass_kg), powerInKW(powerPropMax_kw), speedInKmh(speedMax_kmh));
         System.out.println("init: "+PhysicsModel.getSpeed_ms());
+        setCurrentTractionL(0);
         reset();
     }
 
@@ -184,7 +185,7 @@ public class Vehicle {
         return PhysicsModel.getAccBrake_mss();
     }
     public boolean isKurvenMaxAccNearlyReached(){
-        return PhysicsModel.isKurvenMaxAccNearlyReached(controlAngle.rad());
+        return PhysicsModel.isKurvenMaxAccNearlyReached(controlAngle.deg());
     }
     
     public Vector2d[] getEstimatedLineOfMovement() {
@@ -199,6 +200,10 @@ public class Vehicle {
    public double getLevelInPercent(){
        return level*100;
    }
+    public void setCurrentTractionL(int currentTractionL) {
+        this.currentTractionL = currentTractionL;
+        PhysicsModel.setTractionLevel(TRACTION_LEVEL());
+    }
     
     
     //GRAPHIC OPERATIONS ----------------------------------------------------
