@@ -64,32 +64,32 @@ public class UtyValuesUnitTest {
     }
     
     //TimeDiff-units
-    TimeDiff tD,tD2,tD3,tD4;
+    TimeDiff tD1,tD2,tD3,tD4;
     @Test
     public void test_timeDiffInS(){
-        tD = Values.timeDiffInS(1);
+        tD1 = Values.timeDiffInS(1);
         tD2 = Values.timeDiffInS(1);
-        assertEquals(tD, tD2);
+        assertEquals(tD1, tD2);
     }
     @Test
     public void test_timeDiffInM(){
-        tD = Values.timeDiffInS(60);
+        tD1 = Values.timeDiffInS(60);
         tD2 = Values.timeDiffInM(1);
-        assertEquals(tD, tD2);
+        assertEquals(tD1, tD2);
     }
     @Test
     public void test_timeDiffInH(){
-        tD = Values.timeDiffInS(3600);
+        tD1 = Values.timeDiffInS(3600);
         tD2 = Values.timeDiffInH(1);
-        assertEquals(tD, tD2);
+        assertEquals(tD1, tD2);
     }
     @Test
     public void test_timeDiffInMs(){
-        tD = Values.timeDiffInS(1);
+        tD1 = Values.timeDiffInS(1);
         tD2 = Values.timeDiffInMs(1000);
         tD4 = Values.timeDiffInS(3);
         tD3 = Values.timeDiffInMs(3000);
-        assertEquals(tD, tD2);
+        assertEquals(tD1, tD2);
         assertEquals(tD4, tD3);   
     }
     //Mass-units
@@ -198,14 +198,41 @@ public class UtyValuesUnitTest {
     Angle a1,a2,a3,a4,a5,a6,a7;
     @Test
     public void test_angleInRad(){
+        tD1 = Values.timeDiffInS(40);
         a1 = Values.angleInRad(1);
         a2 = Values.angleInRad(1);
         a3 = Values.angleInRad(30);
         a4 = Values.angleInRad(60);
         a5 = Values.angleInRad(90);
+        a6 = Values.angleInRad(120);
+        a7 = Values.ZERO_ANGLE;
+        assertEquals(a1, a2);
+        assertEquals(a5, a3.add(a4));
+        assertEquals(a4, a6.sub(a3).sub(a3));
+        assertEquals(a6, a3.mul(2));
+        assertEquals(a3, a6.div(4));
+        assertEquals(Values.angleInRad(1200), a3.mul(tD1));
+        assertTrue("60.00".equals(a4.toString()));
+        assertTrue(a7.isZero());
     }
     @Test
     public void test_angleInDeg(){
+        tD1 = Values.timeDiffInS(40);
+        a1 = Values.angleInDeg(1);
+        a2 = Values.angleInDeg(1);
+        a3 = Values.angleInDeg(30);
+        a4 = Values.angleInDeg(60);
+        a5 = Values.angleInDeg(90);
+        a6 = Values.angleInDeg(120);
+        a7 = Values.ZERO_ANGLE;
+        assertEquals(a1, a2);
+        assertEquals(a5, a3.add(a4));
+        assertEquals(a4, a6.sub(a3).sub(a3));
+        assertEquals(a6, a3.mul(2));
+        assertEquals(a3, a6.div(4));
+        assertEquals(Values.angleInDeg(1200), a3.mul(tD1));
+        assertTrue(!a3.isZero());
+        assertTrue(a1.isZero()!=a7.isZero());
     }
     
     //Power-untis
