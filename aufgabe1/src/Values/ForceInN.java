@@ -53,12 +53,12 @@ public class ForceInN extends AbstractScalar implements Force {
 
     @Override
     public double kn() {
-        return this.n()*NEWTON_IN_KNEWTON;
+        return this.n()/NEWTON_IN_KNEWTON;
     }
 
     @Override
     public Power mul(Speed speed) {
-        return PowerInW.valueOf(this.n()/speed.mps());
+        return PowerInW.valueOf(this.n()*speed.mps());
     }
 
     @Override

@@ -134,13 +134,13 @@ public class UtyValuesUnitTest {
 	m2 = Values.massInG(1000);
         m3 = Values.massInG(500);
         m4 = Values.massInG(2500);
-        m5 = Values.massInG(501);
+        m5 = Values.massInG(1500);
         m6 = Values.massInG(2000);
         assertEquals(m4, m3.mul(5));
         assertEquals(m3, m4.div(5));
         assertEquals(m5, m1.add(m3));
         assertEquals(m6, m4.sub(m3));
-        assertTrue(m7.isZero());
+        assertTrue(!m6.isZero());
         assertTrue("0,50".equals(m3.toString()));
 	assertEquals(m1,m2);
     }
@@ -239,9 +239,37 @@ public class UtyValuesUnitTest {
     Power p1,p2,p3,p4;
     @Test
     public void test_powerInW(){
+        p1 = Values.powerInW(500);
+        p2 = Values.powerInW(500);
+        p3 = Values.powerInW(1000);
+        
+        assertEquals(p1, p2);
+        assertEquals(p3, p2.add(p1));
+        assertEquals(p1, p3.sub(p2));
+        assertEquals(p3, p2.mul(2));
+        assertEquals(p1, p3.div(2));
+        assertEquals(Values.forceInN(50),p1.div(Values.speedInMpS(10)));
+        
+        assertTrue(p1.compareTo(p2) == 0);
+        assertTrue(p1.compareTo(p3) == -1);
+        assertTrue(p3.compareTo(p1) == 1);
+        
+        assertTrue(p1.equals(p2));
+        
+        assertTrue(!p1.isZero());
+        assertTrue("500,00".equals(p1.toString()));
+        assertTrue(500.0 == p1.w());
+        assertTrue(0.5 == p1.kw());
+        
+        
+        
     }
     @Test
     public void test_powerInKW(){
+        p1 = Values.powerInKW(0.5);
+        p2 = Values.powerInW(500);
+        
+        assertEquals(p1,p2);
     }
     @Test
     public void test_powerInJs(){
@@ -249,6 +277,7 @@ public class UtyValuesUnitTest {
     
     //Force-unit
     Force f1,f2,f3,f4;
+    @Test
     public void test_forceInN(){
         f1 = Values.forceInN(500);
         f2 = Values.forceInN(500);
@@ -259,10 +288,28 @@ public class UtyValuesUnitTest {
         assertEquals(f1, f3.sub(f2));
         assertEquals(f3, f2.mul(2));
         assertEquals(f1, f3.div(2));
-        assertEquals(f1, f2.mul(Values.speedInMpS(5)));
+        assertEquals(Values.powerInW(2500), f2.mul(Values.speedInMpS(5)));
+        assertEquals(Values.accInMss(5),f1.div(Values.massInKg(100)));
+        assertEquals(Values.massInKg(100),f1.div(Values.accInMss(5)));
+        
+        assertTrue(f1.compareTo(f2) == 0);
+        assertTrue(f1.compareTo(f3) == -1);
+        assertTrue(f3.compareTo(f1) == 1);
+        
+        assertTrue(f1.equals(f2));
+        
+        assertTrue(!f1.isZero());
+        assertTrue("500,00".equals(f1.toString()));
+        assertTrue(500.0 == f1.n() );
+        assertTrue(0.5 == f1.kn());
     }
     @Test
     public void test_forceInKN(){
+        f1 = Values.forceInKN(0.5);
+        f2 = Values.forceInN(500);
+        
+        assertEquals(f1,f2);
+        
     }
     
     //Acc-unit
@@ -284,6 +331,11 @@ public class UtyValuesUnitTest {
         assertTrue(acc3.compareTo(acc1) == 1);
         
         assertTrue(acc1.equals(acc1));
+        
+        assertTrue(!acc1.isZero());
+        assertTrue("5,00".equals(acc1.toString()));
+        assertTrue(5.0 == acc1.mss() );
+        
         
     }
 }

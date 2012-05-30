@@ -61,7 +61,7 @@ final class MassInKg extends  AbstractScalar implements Mass {
 
     @Override
     public double t() {
-        return kg()*KG_IN_TONS;
+        return kg()/KG_IN_TONS;
     }
 
     @Override
@@ -91,7 +91,7 @@ final class MassInKg extends  AbstractScalar implements Mass {
 
     @Override
     public Mass div(double factor) {
-        return new MassInKg(this.kg()*factor);
+        return new MassInKg(this.kg()/factor);
     }
 
     @Override
