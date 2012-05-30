@@ -80,14 +80,14 @@ public final class Values {
     public static Mass massInKg(double kg){
         return MassInKg.valueOf(kg);
     }
-    public static Mass massInT(double kg){
-        return MassInKg.valueOf(MassInKg.valueOf(kg).t());
+    public static Mass massInT(double t){
+        return MassInKg.valueOf(t/KG_IN_TONS);
     }
-    public static Mass massInG(double kg){
-        return MassInKg.valueOf(MassInKg.valueOf(kg).g());
+    public static Mass massInG(double g){
+        return MassInKg.valueOf(g/KG_IN_GRAMM);
     }
-    public static Mass massInLbs(double kg){
-        return MassInKg.valueOf(MassInKg.valueOf(kg).lbs());
+    public static Mass massInLbs(double lbs){
+        return MassInKg.valueOf(lbs*KG_IN_POUNDS);
     }
     
     //Speed-units
@@ -97,37 +97,37 @@ public final class Values {
     public static Speed speedInKmh(double kmh){
         return SpeedInMpS.valueOf(kmh/MPS_IN_KMH);
     }
-    public static Speed speedInMph(double mps){
-        return SpeedInMpS.valueOf(SpeedInMpS.valueOf(mps).mph());
+    public static Speed speedInMph(double mph){
+        return SpeedInMpS.valueOf(mph);
     }
-    public static Speed speedInKn(double mps){
-        return SpeedInMpS.valueOf(SpeedInMpS.valueOf(mps).kn());
+    public static Speed speedInKn(double kn){
+        return SpeedInMpS.valueOf(SpeedInMpS.valueOf(kn).kn());
     }
     //Angle-units
     public static Angle angleInRad(double rad){
         return AngleInRad.valueOf(rad); 
     }
-    public static Angle angleInDeg(double rad){
-        return AngleInRad.valueOf(AngleInRad.valueOf(rad).deg());
+    public static Angle angleInDeg(double deg){
+        return AngleInRad.valueOf(AngleInRad.valueOf(deg).deg());
     }
     
     //Power-untis
     public static Power powerInW(double w){
         return PowerInW.valueOf(w); 
     }
-    public static Power powerInKW(double w){
-        return PowerInW.valueOf(PowerInW.valueOf(w).kw());
+    public static Power powerInKW(double kw){
+        return PowerInW.valueOf(PowerInW.valueOf(kw).kw());
     }
-    public static Power powerInJs(double w){
-        return PowerInW.valueOf(PowerInW.valueOf(w).js());
+    public static Power powerInJs(double js){
+        return PowerInW.valueOf(PowerInW.valueOf(js).js());
     }
     
     //Force-unit
     public static Force forceInN(double n){
        return ForceInN.valueOf(n);
     }
-    public static Force forceInKN(double n){
-        return ForceInN.valueOf(ForceInN.valueOf(n).kn());
+    public static Force forceInKN(double kN){
+        return ForceInN.valueOf(ForceInN.valueOf(kN).kn());
     }
     
     //Acc-unit
