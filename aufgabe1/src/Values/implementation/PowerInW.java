@@ -1,9 +1,12 @@
 
-package Values;
+package Values.implementation;
 
-import static Values.Values.*;
+import Values.interfaces.Force;
+import Values.interfaces.Power;
+import Values.interfaces.Speed;
+import static Values.implementation.Values.*;
 
-public class PowerInW extends AbstractScalar implements Power {
+final class PowerInW extends AbstractScalar implements Power {
     public static int InstanceCounter;
     public void finalize() throws Throwable{
         InstanceCounter --;

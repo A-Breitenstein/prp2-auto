@@ -1,5 +1,14 @@
 
-package Values;
+package Values.implementation;
+
+import Values.interfaces.Length;
+import Values.interfaces.Angle;
+import Values.interfaces.Mass;
+import Values.interfaces.Force;
+import Values.interfaces.TimeDiff;
+import Values.interfaces.Power;
+import Values.interfaces.Speed;
+import Values.interfaces.Acc;
 
 
 

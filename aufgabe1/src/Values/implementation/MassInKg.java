@@ -2,9 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Values;
+package Values.implementation;
 
-import static Values.Values.*;
+import Values.interfaces.Mass;
+import static Values.implementation.Values.*;
 
 /**
  *

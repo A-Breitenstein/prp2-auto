@@ -1,5 +1,5 @@
 
-package Values;
+package Values.interfaces;
 
 
 public interface TimeDiff extends PhysicsScalar, Comparable<TimeDiff>

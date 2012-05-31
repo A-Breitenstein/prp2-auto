@@ -1,9 +1,10 @@
 
-package Values;
+package Values.implementation;
 
-import static Values.Values.*;
+import Values.interfaces.TimeDiff;
+import static Values.implementation.Values.*;
 
-public class TimeDiffInS extends AbstractScalar implements TimeDiff {
+final class TimeDiffInS extends AbstractScalar implements TimeDiff {
     public static int InstanceCounter;
     public void finalize() throws Throwable{
         InstanceCounter --;

@@ -1,9 +1,14 @@
 
-package Values;
+package Values.implementation;
 
-import static Values.Values.*;
+import Values.interfaces.Force;
+import Values.interfaces.Mass;
+import Values.interfaces.TimeDiff;
+import Values.interfaces.Acc;
+import Values.interfaces.Speed;
+import static Values.implementation.Values.*;
 
-public class AccInMss extends AbstractScalar implements Acc {
+final class AccInMss extends AbstractScalar implements Acc {
     /**<b>*#++++#*INTERNAL REPRESANTATION*#++++#*</b>*/
     private final double mss;
     //OBJECT CONSTRUCTORS

@@ -1,5 +1,5 @@
 
-package Values;
+package Values.interfaces;
 
 public interface Length extends PhysicsScalar,Comparable <Length>,
                                                 Operations <Length> {

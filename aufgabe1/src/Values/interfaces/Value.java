@@ -2,12 +2,14 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Values;
+package Values.interfaces;
+
+import Values.interfaces.Immutable;
 
 /**
  *
  * @author abg667
  */
-abstract class AbstractValue  {
+public interface Value extends Immutable {
     
 }
