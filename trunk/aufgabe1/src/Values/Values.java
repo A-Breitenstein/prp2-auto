@@ -87,7 +87,7 @@ public final class Values {
         return MassInKg.valueOf(g*KG_IN_GRAMM);
     }
     public static Mass massInLbs(double lbs){
-        return MassInKg.valueOf(lbs*KG_IN_POUNDS);
+        return MassInKg.valueOf(lbs/KG_IN_POUNDS);
     }
     
     //Speed-units
@@ -135,7 +135,31 @@ public final class Values {
         return AccInMss.valueOf(mss);
     }
     
-    
+    //getter
+    public static String getObjectInstances(){
+        return 
+                "Instances of Objects: \n"+
+                "Force: " + ForceInN.InstanceCounter +"\n" +
+                "Angle: " + AngleInRad.InstanceCounter +"\n" +
+                "Length: " + LengthInM.InstanceCounter + "\n" +
+                "Mass: " + MassInKg.InstanceCounter + "\n" +
+                "Power: " + PowerInW.InstanceCounter + "\n" +
+                "Speed: " + SpeedInMpS.InstanceCounter + "\n" +
+                "Time: " + TimeDiffInS.InstanceCounter + "\n"
+                ;          
+    }
+    public static int getObjectInstancesSummed(){
+        return 
+                
+                ForceInN.InstanceCounter
+                + AngleInRad.InstanceCounter
+                + LengthInM.InstanceCounter
+                + MassInKg.InstanceCounter
+                + PowerInW.InstanceCounter 
+                + SpeedInMpS.InstanceCounter
+                + TimeDiffInS.InstanceCounter
+                ;          
+    }
     
     
 }

@@ -4,13 +4,18 @@ package Values;
 import static Values.Values.*;
 
 public class TimeDiffInS extends AbstractScalar implements TimeDiff {
+    public static int InstanceCounter;
+    public void finalize() throws Throwable{
+        InstanceCounter --;
+        super.finalize();
+    }
 
     //INTERNAL REPRESENTATION
     private final double seconds;
     
     //Object
     private TimeDiffInS(double seconds){
-        this.seconds = seconds;
+        this.seconds = seconds;InstanceCounter ++;
     }
     
     public static TimeDiff valueOf(double seconds){

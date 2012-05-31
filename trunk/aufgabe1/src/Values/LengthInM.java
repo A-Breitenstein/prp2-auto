@@ -10,13 +10,18 @@ import static Values.Values.*;
  * @author abg667
  */
 final class LengthInM extends AbstractScalar implements Length {
+    public static int InstanceCounter;
+    public void finalize() throws Throwable{
+        InstanceCounter --;
+        super.finalize();
+    }
     // INTERNAL REPRESENTATION
     private final double meters;
     
     
    // OBJECT CREATION
     private LengthInM(double meters){        
-        this.meters = meters;
+        this.meters = meters;InstanceCounter ++;
     }
     public static Length valueOf(double meters){
         return new LengthInM(meters);
