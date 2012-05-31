@@ -2,13 +2,16 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Values;
-import static Values.Values.*;
+package Values.implementation;
+import Values.interfaces.Length;
+import Values.interfaces.TimeDiff;
+import Values.interfaces.Speed;
+import static Values.implementation.Values.*;
 /**
  *
  * @author abg667
  */
-public class SpeedInMpS extends AbstractScalar implements Speed {
+final class SpeedInMpS extends AbstractScalar implements Speed {
     public static int InstanceCounter;
     public void finalize() throws Throwable{
         InstanceCounter --;

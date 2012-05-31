@@ -2,15 +2,17 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Values;
+package Values.implementation;
 
-import static Values.Values.*;
+import Values.interfaces.Angle;
+import Values.interfaces.TimeDiff;
+import static Values.implementation.Values.*;
 
 /**
  *
  * @author abg667
  */
-public final class AngleInRad extends AbstractScalar implements Angle {
+ final class AngleInRad extends AbstractScalar implements Angle {
     public static int InstanceCounter;
     public void finalize() throws Throwable{
         InstanceCounter --;

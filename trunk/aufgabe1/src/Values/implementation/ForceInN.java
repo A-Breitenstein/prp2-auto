@@ -1,9 +1,14 @@
 
-package Values;
+package Values.implementation;
 
-import static Values.Values.*;
+import Values.interfaces.Force;
+import Values.interfaces.Mass;
+import Values.interfaces.Power;
+import Values.interfaces.Speed;
+import Values.interfaces.Acc;
+import static Values.implementation.Values.*;
 
-public class ForceInN extends AbstractScalar implements Force {
+final class ForceInN extends AbstractScalar implements Force {
     //INTERNAL REPRESANTATION
     private final double n;
     //OBJECT CREATION

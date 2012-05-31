@@ -1,5 +1,5 @@
 
-package Values;
+package Values.interfaces;
 
 
 public interface Power extends PhysicsScalar, Comparable<Power>

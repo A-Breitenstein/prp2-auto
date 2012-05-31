@@ -1,11 +1,23 @@
+package Values.test;
 
+
+
+
+import Values.implementation.Values;
+import Values.interfaces.Mass;
+import Values.interfaces.TimeDiff;
+import Values.interfaces.Power;
+import Values.interfaces.Length;
+import Values.interfaces.Force;
+import Values.interfaces.Speed;
+import Values.interfaces.Angle;
+import Values.interfaces.Acc;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import Values.*;
 import java.util.*;
 
 /**

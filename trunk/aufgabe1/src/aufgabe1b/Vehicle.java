@@ -1,8 +1,8 @@
 
 package aufgabe1b;
 
-import Values.Angle;
-import static Values.Values.*;
+import Values.interfaces.Angle;
+import static Values.implementation.Values.*;
 /**
  *
  * @author Sven

@@ -2,12 +2,14 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Values;
+package Values.interfaces;
 
 /**
  *
  * @author abg667
  */
-public interface Immutable {
+public interface PhysicsScalar extends PhysicsValue{
+        boolean isZero();
+        boolean isValid();
     
 }

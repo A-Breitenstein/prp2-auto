@@ -4,7 +4,7 @@ package aufgabe1b;
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-import Values.Values;
+import Values.implementation.Values;
 import java.util.ArrayList;
 import java.util.HashMap;
 import jgame.*;
