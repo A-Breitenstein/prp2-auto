@@ -9,7 +9,7 @@ package Values;
  * @author abg667
  */
 abstract class AbstractScalar extends AbstractValue implements PhysicsScalar{
-  
+    
     @Override
     public abstract boolean equals(Object o);
     

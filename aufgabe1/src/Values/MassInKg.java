@@ -11,12 +11,17 @@ import static Values.Values.*;
  * @author abg667
  */
 final class MassInKg extends  AbstractScalar implements Mass {
+    public static int InstanceCounter;
+    public void finalize() throws Throwable{
+        InstanceCounter --;
+        super.finalize();
+    }
     //INTERNAL REPRESANTATION
     private final double kg;
     
     //OBJECT CREATION
     private MassInKg(double kg){
-        this.kg = kg;
+        this.kg = kg;InstanceCounter ++;
     }
     static Mass valueOf(double kg){
         return new MassInKg(kg);

@@ -4,6 +4,7 @@ package aufgabe1b;
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+import Values.Values;
 import java.util.ArrayList;
 import java.util.HashMap;
 import jgame.*;
@@ -282,6 +283,9 @@ public class MainClass extends JGEngine {
     private void drawUI() {
         setColor(JGColor.green);
         drawString("ElapsedTime_sec: " + vehicle.PhysicsModel.elapsedTime, UI_X + 25, UI_Y - 530, 0);
+        drawString("Summ of Instances: " + Values.getObjectInstancesSummed() , UI_X + 25, UI_Y - 500, 0);
+        drawString("Memory Usage: " + Values.getObjectInstancesSummed()*8/1000 +"KB" , UI_X + 25, UI_Y - 470, 0);
+        drawString(Values.getObjectInstances() , UI_X -260, UI_Y - 40, 0);
         drawString("Bodenbelag: " + bodenBelag, UI_X - 550, UI_Y + 50, 0);
         drawString("BrakeLevel:" + formatDouble(car_array[0].getBrakeLevel() * 100), UI_X - 450, UI_Y + 20, 0);
         drawString(car_array[0].getASR_ABS_status(), UI_X - 250, UI_Y + 50, 0);

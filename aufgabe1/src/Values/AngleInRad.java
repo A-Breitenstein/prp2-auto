@@ -11,6 +11,11 @@ import static Values.Values.*;
  * @author abg667
  */
 public final class AngleInRad extends AbstractScalar implements Angle {
+    public static int InstanceCounter;
+    public void finalize() throws Throwable{
+        InstanceCounter --;
+        super.finalize();
+    }
 
     //INTERNAL REPRESANTATION
     private final double rad;
@@ -18,6 +23,7 @@ public final class AngleInRad extends AbstractScalar implements Angle {
     //OBJECT CREATION
     private AngleInRad(double rad){
         this.rad = rad;
+        InstanceCounter ++;
     }
     static Angle valueOf(double rad){
         return new AngleInRad(rad);

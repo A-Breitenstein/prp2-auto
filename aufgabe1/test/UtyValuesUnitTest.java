@@ -6,7 +6,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import Values.*;
-import com.sun.corba.se.spi.extension.ZeroPortPolicy;
+import java.util.*;
 
 /**
  *
@@ -53,14 +53,14 @@ public class UtyValuesUnitTest {
         l1 = Values.lengthInM(1);
         l2 = Values.lenghtInNm(0.000539956803);
         
-        assertEquals(l1,l2);
+        assertEquals(l1.m(),l2.m(),0.01);
     }
     @Test
     public void test_lenghtInFt(){
         Length l1, l2;
         l1 = Values.lengthInM(1);
         l2 = Values.lenghtInFt(3.2808399);
-        assertEquals(l1, l2);
+        assertEquals(l1.m(), l2.m(),0.01);
     }
     
     //TimeDiff-units
@@ -110,6 +110,7 @@ public class UtyValuesUnitTest {
         assertEquals(m6, m4.sub(m3));
         assertTrue(m7.isZero());
         assertTrue("500,00".equals(m3.toString()));
+        assertEquals("500,00", m3.toString());
     }
     @Test
     public void test_massInT(){
@@ -154,9 +155,9 @@ public class UtyValuesUnitTest {
         m6 = Values.massInLbs(4409.24524);
         m7 = Values.ZERO_MASS;
         assertEquals(m4, m3.mul(5));
-        assertEquals(m3, m4.div(5));
-        assertEquals(m5, m1.add(m3));
-        assertEquals(m6, m4.sub(m3));
+        assertEquals(m3.kg(), m4.div(5).kg(),0.01);
+        assertEquals(m5.kg(), m1.add(m3).kg(),4d);
+        assertEquals(m6.kg(), m4.sub(m3).kg(),0.01);
         assertTrue(m7.isZero());
         assertTrue("500,00".equals(m3.toString()));
 	assertEquals(m1,m2);
@@ -227,10 +228,10 @@ public class UtyValuesUnitTest {
         a7 = Values.ZERO_ANGLE;
         assertEquals(a1, a2);
         assertEquals(a5, a3.add(a4));
-        assertEquals(a4, a6.sub(a3).sub(a3));
-        assertEquals(a6, a3.mul(2));
+        assertEquals(a4.deg(), a6.sub(a3).sub(a3).deg(),0.01);
+        assertEquals(a4, a3.mul(2));
         assertEquals(a3, a6.div(4));
-        assertEquals(Values.angleInDeg(1200), a3.mul(tD1));
+        assertEquals(Values.angleInDeg(1200).deg(), a3.mul(tD1).deg(),0.01);
         assertTrue(!a3.isZero());
         assertTrue(a1.isZero()!=a7.isZero());
     }
@@ -335,6 +336,8 @@ public class UtyValuesUnitTest {
         assertTrue(!acc1.isZero());
         assertTrue("5,00".equals(acc1.toString()));
         assertTrue(5.0 == acc1.mss() );
+        
+
         
         
     }

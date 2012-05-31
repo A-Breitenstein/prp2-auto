@@ -9,6 +9,12 @@ public class ForceInN extends AbstractScalar implements Force {
     //OBJECT CREATION
     private ForceInN(double n){
         this.n = n;
+        InstanceCounter ++;       
+    }
+    public static int InstanceCounter;
+    public void finalize() throws Throwable{
+        InstanceCounter --;
+        super.finalize();
     }
     /** Class Force: FactoryMethode 
      * @param n Eine Kraft 

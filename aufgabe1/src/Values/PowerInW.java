@@ -4,11 +4,16 @@ package Values;
 import static Values.Values.*;
 
 public class PowerInW extends AbstractScalar implements Power {
+    public static int InstanceCounter;
+    public void finalize() throws Throwable{
+        InstanceCounter --;
+        super.finalize();
+    }
     //INTERNAL REPRESANTION
     private final double w;
     //OBJECT CREATION
     private PowerInW(double w){
-        this.w = w;
+        this.w = w;InstanceCounter ++;
     }
     
     static Power valueOf(double w){

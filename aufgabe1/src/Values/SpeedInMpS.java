@@ -9,12 +9,17 @@ import static Values.Values.*;
  * @author abg667
  */
 public class SpeedInMpS extends AbstractScalar implements Speed {
+    public static int InstanceCounter;
+    public void finalize() throws Throwable{
+        InstanceCounter --;
+        super.finalize();
+    }
 
     //INTERNALT REPRESANTATION
     private final double mps;
     //OBJECT CREATION
     private SpeedInMpS(double mps){
-        this.mps = mps;
+        this.mps = mps;InstanceCounter ++;
     }
     
     static Speed valueOf(double mps){

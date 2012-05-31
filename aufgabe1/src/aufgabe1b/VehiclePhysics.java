@@ -72,7 +72,6 @@ public class VehiclePhysics {
         Force forceProp, forcePropAbs, forceResultPropBrake;
         forcePropAbs = calcForcePropAbs_n(level);
         
-        System.out.println("Mass: "+mass+", AccZentrifugal: "+accZentrifugal);
         forceBrakeCurveMax = forceInN(Math.sqrt(
         forceInN(Math.pow(accZentrifugalMax.mul(mass).n(),2)).sub(forceInN(Math.pow(accZentrifugal.mul(mass).n(), 2))).n()
                                                 ));
@@ -101,7 +100,6 @@ public class VehiclePhysics {
         curveSpeedMax = calcCurveMaxSpeed_ms();
         
         accFinal = force.div(mass);
-        System.out.println("accFinal: "+accFinal);
         speed = speed.add(accFinal.mul(deltaTime));
         traveledDistance = traveledDistance.add(lengthInM(Math.abs(speed.mps())*deltaTime.s()));
         elapsedTime = elapsedTime.add(deltaTime);
@@ -307,7 +305,6 @@ public class VehiclePhysics {
    
    //ADT:: public double getSpeed_ms()
    public double getSpeed_ms(){
-       System.out.println("getterspeed : "+speed.mps());
         return speed.mps();
    }
    /*

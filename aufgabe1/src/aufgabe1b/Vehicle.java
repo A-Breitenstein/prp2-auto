@@ -39,8 +39,6 @@ public class Vehicle {
     private Vehicle(String name,double mass_kg, double powerPropMax_kw, double speedMax_kmh) {
         VEHICLE_NAME = name;
         PhysicsModel = VehiclePhysics.create(massInKg(mass_kg), powerInKW(powerPropMax_kw), speedInKmh(speedMax_kmh));
-        System.out.println("init: "+PhysicsModel.getSpeed_ms());
-        setCurrentTractionL(0);
         reset();
     }
 
@@ -69,7 +67,6 @@ public class Vehicle {
     }
     
     public void step(double deltaTime_s) {
-        System.out.println("-|-|-VeicleStep-|-|-");
         throttleControl();
         PhysicsModel.step(deltaTime_s, level,brakeLevel,controlAngle);
         
@@ -217,7 +214,6 @@ public class Vehicle {
      private Vector2d calcDisplayPosition(double deltaTime_s,double posAngle_rad,double speed_ms,Vector2d vecOldPos){
          
         Vector2d vecSpeed_m_s = Vector2d.new_(Math.cos(posAngle_rad) * speed_ms, Math.sin(posAngle_rad) * speed_ms);
-        System.out.println(vecOldPos);
         Vector2d vecNewPos = Vector2d.setToVec(vecOldPos); 
         return  vecNewPos.add(vecSpeed_m_s.mulScalar(deltaTime_s));
         
