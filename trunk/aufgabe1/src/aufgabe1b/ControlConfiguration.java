@@ -34,8 +34,8 @@ public class ControlConfiguration{
 	playerOne.put("turnRight",39);
 	playerOne.put("turnLeft",37);
 	playerOne.put("reset",82);
-	playerOne.put("increaseBrakeLevel",96);
-	playerOne.put("decreaseBrakeLevel",110);
+	playerOne.put("increaseBrakeLevel",77);
+	playerOne.put("decreaseBrakeLevel",78);
 	
 	//::playerTwo Belegung
 	playerTwo.put("increaseLevel",87);

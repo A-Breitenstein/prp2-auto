@@ -69,6 +69,7 @@ public class MainClass extends JGEngine {
 	if (getKey(getKeyCode(playerOne,"decreaseBrakeLevel"))) vehicle.decreaseBreakLevel();
         if (getKey(getKeyCode(playerOne,"increaseBrakeLevel")))  vehicle.increaseBreakLevel();
 	if (getKey(getKeyCode(playerOne,"decreaseBrakeLevel"))) vehicle.decreaseBreakLevel();
+        if (getKey(getKeyCode(playerOne,"reset"))) vehicle.reset();
 	
 	//::Player2
     	if (getKey(getKeyCode(playerTwo,"increaseLevel")))  carArray[p2].increaseLevel();
@@ -381,15 +382,35 @@ public class MainClass extends JGEngine {
         //LINKER REIFEN TRANSFORMATIOn
         scaled_model = scale_model(rad_x, rad_y, 1.0d);
         double[][] model_space = add_position(scaled_model[0], scaled_model[1], 20, -10);
-        rotated_model = apply_rotation_z_axies(model_space[0], model_space[1], car.posAngle.rad() + car.controlAngle.rad());
+        rotated_model = apply_rotation_z_axies(model_space[0], model_space[1], car.driftAngle.rad()+car.controlAngle.rad());
         world_space = add_position(rotated_model[0], rotated_model[1], worldpos_x, worldpos_y);
         drawPolygon(world_space[0], world_space[1], null, 4, true, true);
+        
+        
+         //LINKER HInterREIFEN TRANSFORMATIOn
+        scaled_model = scale_model(rad_x, rad_y, 1.0d);
+         model_space = add_position(scaled_model[0], scaled_model[1], -16, -10);
+        rotated_model = apply_rotation_z_axies(model_space[0], model_space[1], car.posAngle.rad());
+        world_space = add_position(rotated_model[0], rotated_model[1], worldpos_x, worldpos_y);
+        drawPolygon(world_space[0], world_space[1], null, 4, true, true);
+        
+        
+        
+        
         //RECHTER REIFEN TRANSFORMATION
         scaled_model = scale_model(rad_x, rad_y, 1.0d);
         model_space = add_position(scaled_model[0], scaled_model[1], 20, 10);
         rotated_model = apply_rotation_z_axies(model_space[0], model_space[1], car.posAngle.rad() + car.controlAngle.rad());
         world_space = add_position(rotated_model[0], rotated_model[1], worldpos_x, worldpos_y);
         drawPolygon(world_space[0], world_space[1], null, 4, true, true);
+        
+        //RECHTER HINTERREIFEN
+        scaled_model = scale_model(rad_x, rad_y, 1.0d);
+        model_space = add_position(scaled_model[0], scaled_model[1], -16, 10);
+       rotated_model = apply_rotation_z_axies(model_space[0], model_space[1], car.posAngle.rad());
+        world_space = add_position(rotated_model[0], rotated_model[1], worldpos_x, worldpos_y);
+        drawPolygon(world_space[0], world_space[1], null, 4, true, true);
+        
     }
     
     

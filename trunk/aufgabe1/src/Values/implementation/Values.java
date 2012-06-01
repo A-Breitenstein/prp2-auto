@@ -9,6 +9,7 @@ import Values.interfaces.TimeDiff;
 import Values.interfaces.Power;
 import Values.interfaces.Speed;
 import Values.interfaces.Acc;
+import Values.interfaces.BoundingBox;
 
 
 
@@ -54,6 +55,13 @@ public final class Values {
     public static final Power ZERO_POWER = powerInW(0.0);
     public static final Force ZERO_FORCE = forceInN(0.0);
     public static final Acc ZERO_ACC = accInMss(0.0);
+    
+    public static final BoundingBox BB_ZERO = boundingBoxInM(0.0,0.0,0.0);
+    
+    public static BoundingBox boundingBoxInM(double length, double width, double height){
+        return BoundingBoxImpl.valueOf(lengthInM(length), lengthInM(width),lengthInM(height));
+    }
+    
     
     
     //Length-units
