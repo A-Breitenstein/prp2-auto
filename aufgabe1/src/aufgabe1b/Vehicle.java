@@ -13,7 +13,7 @@ public class Vehicle {
 
     private int currentTractionL;
     private double level,brakeLevel;
-    public Angle posAngle, controlAngle; 
+    public Angle posAngle, controlAngle,driftAngle; 
           
     //zu zwecken public
     public VehiclePhysics PhysicsModel;
@@ -70,7 +70,7 @@ public class Vehicle {
         throttleControl();
         PhysicsModel.step(deltaTime_s, level,brakeLevel,controlAngle);
         
-        
+       spinRight(); 
         if (PhysicsModel.tiresArentBlockedAndSpeedisNotNull()) {
             posAngle = posAngle.add(controlAngle.mul(deltaTime_s));
         }
@@ -88,6 +88,7 @@ public class Vehicle {
         vecPos_m = Vector2d.new_(200, 145);
         posAngle = ZERO_ANGLE;
         controlAngle = ZERO_ANGLE;
+        driftAngle = ZERO_ANGLE;
     }
 
     
@@ -109,6 +110,7 @@ public class Vehicle {
     }
 
     public void increaseBreakLevel() {
+        System.out.println("BREMSEEEE");
         if (brakeLevel < 1.0d) {
             brakeLevel += LEVEL_CONST();
             brakelevel_button_pressed = true;
@@ -136,6 +138,16 @@ public class Vehicle {
         if (controlAngle.deg() > -MAX_CONTROL_ANGLE_DEG) {
            controlAngle = controlAngle.sub(angleInDeg(1d));
         }
+    }
+    
+    public void spinRight(){
+        
+           driftAngle = PosAngleRad_overflowCorrection(driftAngle.add(angleInDeg(1d)).rad());
+    }
+    
+    public double getSpinRight(){
+        return driftAngle.rad();
+        
     }
     
     public void stop() {

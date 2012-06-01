@@ -9,7 +9,6 @@ import Values.interfaces.TimeDiff;
 import Values.interfaces.Power;
 import Values.interfaces.Speed;
 import Values.interfaces.Acc;
-import Values.*;
 import static Values.implementation.Values.*;
 
 /**
@@ -32,12 +31,14 @@ public class VehiclePhysics {
                   forceFinal;
     public Acc accFinal, accCurve, accZentrifugal,
                 accZentrifugalMax;
-    
+
+    private final double BRAKE_CONST = 1.0;
     private final double DRAG_CONST;
     private final double ACC_EARTH = 9.82;
     private final double NORMAL_TRACTION = 1.0;
     private boolean tractionloss,ABS_active,ASR_active,tiresblocked;
-   
+
+    
    //ADT:: public void reset()
     public void reset(){
         elapsedTime = ZERO_TIMEDIFF;
@@ -63,7 +64,7 @@ public class VehiclePhysics {
         this.powerPropMax = powerPropMax;
         this.speedMax = speedMax;
         DRAG_CONST = Math.abs(powerPropMax.div(Math.pow(speedMax.mps(), 3)).w());
-        forceBrakeMax = forceInN(calcCineticEnergie_w(speedMax, mass));
+        forceBrakeMax = forceInN(calcCineticEnergie_w(speedMax, mass)/BRAKE_CONST).div(speedMax.mps());
         setTractionLevel(NORMAL_TRACTION);
         reset();
     }
