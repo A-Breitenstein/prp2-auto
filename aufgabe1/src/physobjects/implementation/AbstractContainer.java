@@ -2,13 +2,14 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Values.interfaces;
+package physobjects.implementation;
+
+import physobjects.interfaces.Container;
 
 /**
  *
  * @author abg667
  */
-public interface UniqueID extends AdminValue, Comparable<UniqueID> {
+abstract class AbstractContainer implements Container {
     
-    long idNumber();
 }
