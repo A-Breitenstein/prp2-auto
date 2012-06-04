@@ -6,6 +6,7 @@ package physobjects.implementation;
 
 import physobjects.interfaces.Bounded3DimStack;
 import Values.interfaces.StowageLocation;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 
@@ -13,11 +14,17 @@ import java.util.Set;
  *
  * @author abg667
  */
-public class Bounded3DimStackImpl<E> implements Bounded3DimStack<E> {
+final public class Bounded3DimStackImpl<E> implements Bounded3DimStack<E> {
+    public ArrayList<ArrayList<ArrayList<E>>> staples;
 
+    
+    
+    
     @Override
     public void load(int bayNo, int rowNo, E elem) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        staples.get(bayNo).get(rowNo).add(elem);
+        
+        
     }
 
     @Override
@@ -59,6 +66,7 @@ public class Bounded3DimStackImpl<E> implements Bounded3DimStack<E> {
     public E get(StowageLocation stowLoc) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+    
 
     @Override
     public Set<E> getAll() {
@@ -70,4 +78,30 @@ public class Bounded3DimStackImpl<E> implements Bounded3DimStack<E> {
         throw new UnsupportedOperationException("Not supported yet.");
     }
     
+    
+    
+    public static void main(String[] args) {
+        Bounded3DimStackImpl<Integer> stackVonInt = new Bounded3DimStackImpl<Integer>();
+    
+        //init
+        for (int i = 0; i < 10; i++) {
+            for(int k=0; i<10; k++){
+                for(int j=0; j<10; j++){
+                stackVonInt.load(i,k,j);
+                }
+            }
+        }
+        
+        //output
+        for (int i = 0; i < 10; i++) {
+            for(int k=0; i<10; k++){
+                for(int j=0; j<10; j++){
+                stackVonInt.staples.get(i).get(k).get(j);
+                }
+            }
+        }
+        
+        
+        
+    }
 }
