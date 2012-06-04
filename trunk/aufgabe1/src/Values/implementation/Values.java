@@ -10,9 +10,12 @@ import Values.interfaces.Power;
 import Values.interfaces.Speed;
 import Values.interfaces.Acc;
 import Values.interfaces.BoundingBox;
+import Values.interfaces.Name;
+import Values.interfaces.UniqueID;
+import Values.interfaces.StowageLocation;
 
 
-
+//TODO: 
 /**
  * Factory and Utility Class
  */
@@ -56,12 +59,26 @@ public final class Values {
     public static final Force ZERO_FORCE = forceInN(0.0);
     public static final Acc ZERO_ACC = accInMss(0.0);
     
-    public static final BoundingBox BB_ZERO = boundingBoxInM(0.0,0.0,0.0);
+    public static final BoundingBox ZERO_BB = boundingBoxInM(0.0,0.0,0.0);
+    public static final StowageLocation ZERO_STOWAGELOC = stowageLocation(0,0,0);
+    public static final Name ZERO_NAME = name("");
+
+    //admin values
+    public static UniqueID uniqueID(){
+        return UniqueIdImpl.valueOf();
+    }
+    public static Name name(String name){
+        return NameImpl.valueOf(name);
+    }
+    public static StowageLocation stowageLocation(int bay,int row,int tier){
+        return StowageLocationImpl.valueOf(bay,row,tier);
+    }
     
+    
+    //boundingbox
     public static BoundingBox boundingBoxInM(double length, double width, double height){
         return BoundingBoxImpl.valueOf(lengthInM(length), lengthInM(width),lengthInM(height));
     }
-    
     
     
     //Length-units

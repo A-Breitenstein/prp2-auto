@@ -2,13 +2,14 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Values.interfaces;
+package physobjects.interfaces;
+
+
 
 /**
  *
  * @author abg667
  */
-public interface UniqueID extends AdminValue, Comparable<UniqueID> {
+public interface Stowage<E> extends Mutable, Body, WithCargo, Bounded3DimStack<E> {
     
-    long idNumber();
 }

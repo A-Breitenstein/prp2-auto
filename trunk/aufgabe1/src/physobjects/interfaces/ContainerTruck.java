@@ -2,13 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Values.interfaces;
+package physobjects.interfaces;
 
 /**
  *
  * @author abg667
  */
-public interface UniqueID extends AdminValue, Comparable<UniqueID> {
+public interface ContainerTruck extends Truck, WithCargo, ContainerStowage {
     
-    long idNumber();
 }
