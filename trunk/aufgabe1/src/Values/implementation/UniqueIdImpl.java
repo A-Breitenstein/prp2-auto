@@ -22,9 +22,11 @@ final class UniqueIdImpl extends AbstractValue implements UniqueID {
         this.id = autoIncrementNumber;
         
     }
+    
     public static UniqueID valueOf(){
         return new UniqueIdImpl();
     }
+    
     
     @Override
     public long idNumber() {
