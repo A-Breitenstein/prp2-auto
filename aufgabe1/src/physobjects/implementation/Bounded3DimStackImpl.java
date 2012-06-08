@@ -4,11 +4,15 @@
  */
 package physobjects.implementation;
 
+import physobjects.interfaces.Stowage;
 import physobjects.interfaces.Bounded3DimStack;
 import Values.interfaces.StowageLocation;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
+import physobjects.interfaces.Container;
+import static Values.implementation.Values.*;
 
 /**
  *
@@ -16,8 +20,22 @@ import java.util.Set;
  */
 final public class Bounded3DimStackImpl<E> implements Bounded3DimStack<E> {
     public ArrayList<ArrayList<ArrayList<E>>> staples;
-
     
+
+    //CONSTRUCTOR
+    public Bounded3DimStackImpl(int bays,int rows,int tiers, E elem){
+
+        for(int i = 0;i <= bays;i++){
+            staples.add(new ArrayList<ArrayList<E>>());
+            for (int j = 0; j <= rows; j++) {
+                staples.get(i).add(new ArrayList<E>());
+                for (int k = 0; k <= tiers; k++) {
+                    staples.get(i).get(j).add(elem);
+                    
+                }
+            }
+        }
+    }
     
     
     @Override
@@ -34,73 +52,134 @@ final public class Bounded3DimStackImpl<E> implements Bounded3DimStack<E> {
 
     @Override
     public boolean isEmpty() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        
+        boolean laufe = true;
+        for(int i = 0; (i< staples.size()) &&(laufe);i++){
+            for (int j = 0; (j < staples.get(i).size()) &&(laufe); j++) {
+                   laufe = tierIsEmpty(i, j);   
+            }
+            
+        }
+        return laufe;
     }
 
     @Override
     public boolean isFull() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        
+        boolean laufe = true;
+        for(int i = 0; (i< staples.size()) &&(laufe);i++){
+            for (int j = 0; (j < staples.get(i).size()) &&(laufe); j++) {
+                 laufe = tierIsFull(i, j);   
+            }
+            
+        }
+        return laufe;
     }
 
     @Override
     public boolean tierIsEmpty(int bay, int row) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        boolean laufe = true; 
+        for (int k = 0;(k < staples.get(bay).get(row).size()) &&(laufe); k++) {
+                    laufe = ((Stowage<E>)staples.get(bay).get(row).get(k)).isFree();
+           }
+        
+ 
+        return laufe;
     }
 
     @Override
     public boolean tierIsFull(int bay, int row) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        boolean laufe = true; 
+        for (int k = 0;(k < staples.get(bay).get(row).size()) &&(laufe); k++) {
+                    laufe = !((Stowage<E>) staples.get(bay).get(row).get(k)).isFree();
+           }
+        
+ 
+        return laufe;
     }
 
     @Override
     public boolean contains(Object elem) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        boolean laufe = true;
+        for(int i = 0; (i< staples.size()) &&(laufe);i++){
+            for (int j = 0; (j < staples.get(i).size()) &&(laufe); j++) {
+                  for (int k = 0;(k < staples.get(i).get(j).size()) &&(laufe); k++) {
+                    laufe = !staples.get(i).get(j).get(k).equals(elem);
+                    }
+            }
+            
+        }
+        return !laufe;
     }
 
     @Override
     public boolean containsAll(Collection<?> coll) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new UnsupportedOperationException("..");
+//        
+//        boolean laufe = true;
+//        
+//        
+//        List<E> list = new ArrayList<E>(coll);
+//        for (int c = 0; (c < coll.size()) &&(laufe); c++) {
+//           
+//            
+//        }
+//            for(int i = 0; (i< staples.size()) &&(laufe);i++){
+//                for (int j = 0; (j < staples.get(i).size()) &&(laufe); j++) {
+//                      for (int k = 0;(k < staples.get(i).get(j).size()) &&(laufe); k++) {
+//                        laufe = !staples.get(i).get(j).get(k).equals(elem);
+//                        }
+//                }
+//
+//            }
+//        
+//        
+//        return !laufe;
+//        
+        
     }
 
     @Override
     public E get(StowageLocation stowLoc) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return staples.get(stowLoc.bay()).get(stowLoc.row()).get(stowLoc.tier());
     }
     
 
     @Override
     public Set<E> getAll() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Set<E> set = new HashSet<E>();
+        for (ArrayList<ArrayList<E>> arrayList : staples) {
+            for (ArrayList<E> arrayList1 : arrayList) {
+                for (E e : arrayList1) {
+                    if(((Stowage<E>)e).isOccupied()) set.add(e);
+                    
+                }
+            }
+        }
+        return set;
     }
 
     @Override
     public StowageLocation locationOf(E elem) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        boolean laufe = true;
+        StowageLocation loc = ZERO_STOWAGELOC;
+        for(int i = 0; (i< staples.size()) &&(laufe);i++){
+            for (int j = 0; (j < staples.get(i).size()) &&(laufe); j++) {
+                  for (int k = 0;(k < staples.get(i).get(j).size()) &&(laufe); k++) {
+                    laufe = !staples.get(i).get(j).get(k).equals(elem);
+                        loc = stowageLocation(i, j, k);
+                    }
+            }
+            
+        }
+        return loc;
     }
     
     
     
     public static void main(String[] args) {
-        Bounded3DimStackImpl<Integer> stackVonInt = new Bounded3DimStackImpl<Integer>();
-    
-        //init
-        for (int i = 0; i < 10; i++) {
-            for(int k=0; i<10; k++){
-                for(int j=0; j<10; j++){
-                stackVonInt.load(i,k,j);
-                }
-            }
-        }
-        
-        //output
-        for (int i = 0; i < 10; i++) {
-            for(int k=0; i<10; k++){
-                for(int j=0; j<10; j++){
-                stackVonInt.staples.get(i).get(k).get(j);
-                }
-            }
-        }
-        
+
+        Bounded3DimStack<Container> stack = new Bounded3DimStackImpl<Container>(5,5,5,);
         
         
     }
