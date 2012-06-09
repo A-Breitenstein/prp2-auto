@@ -6,28 +6,26 @@ package physobjects.implementation;
 
 /**
  *
- * @author abg667
+ * @author Sven
  */
-final class NullContainer extends AbstractContainer{
+public class NonContainer extends AbstractContainer{
 
-    private NullContainer(){}
-    static NullContainer nullContainer(){
-        return new NullContainer();
+    private NonContainer(){}
+    public static NonContainer nonContainer(){
+        return new NonContainer();
     }
-    
     @Override
     public boolean isFree() {
-        return true;
+        return false;
     }
 
     @Override
     public boolean isBlocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isOccupied() {
         return false;
     }
-    
 }

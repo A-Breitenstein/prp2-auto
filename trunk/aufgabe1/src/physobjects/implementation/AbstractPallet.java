@@ -61,5 +61,10 @@ abstract class AbstractPallet implements Pallet {
     public int compareTo(Pallet o) {
         return this.uniqueID().compareTo(o.uniqueID());
     }
+    
+    @Override
+    public String toString(){
+        return this.getClass()+": "+uniqueID();
+    }
   
 }
