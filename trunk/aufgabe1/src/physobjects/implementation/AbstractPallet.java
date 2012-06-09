@@ -19,12 +19,11 @@ import physobjects.interfaces.Pallet;
  *
  * @author abg667
  */
-abstract class AbstractPallet implements Pallet {
+abstract class AbstractPallet extends AbstractBody implements Pallet {
     protected StowageLocation loc = Values.ZERO_STOWAGELOC;
     protected Container StowageReference;
     final protected UniqueID uID = Values.uniqueID();
     protected Mass mass = Values.ZERO_MASS;
-    protected BoundingBox boundingBox = Values.ZERO_BB;
     
     @Override
     public Mass mass() {
@@ -64,7 +63,7 @@ abstract class AbstractPallet implements Pallet {
     
     @Override
     public String toString(){
-        return this.getClass()+": "+uniqueID();
+        return this.getClass().getSimpleName()+": "+uniqueID();
     }
   
 }

@@ -19,12 +19,11 @@ import physobjects.interfaces.Stowage;
  *
  * @author abg667
  */
-abstract class AbstractContainer implements Container {
+abstract class AbstractContainer extends AbstractBody implements Container {
    
     protected Stowage<Pallet> palletStowage ; //SOLANGE HIER NIX DRIN HÄNGT NULLPOINTER
     protected Mass emptyMass = Values.ZERO_MASS;
     protected Mass maxMass = Values.ZERO_MASS;
-    protected BoundingBox boundingBox = Values.ZERO_BB;
     protected final UniqueID uID = Values.uniqueID();
     protected StowageLocation loc = Values.ZERO_STOWAGELOC;
     protected Container StowageReference;
@@ -43,7 +42,7 @@ abstract class AbstractContainer implements Container {
 //            
 //        }
 //        return Values.ZERO_MASS;
-        return palletStowage.mass();
+        return palletStowage.mass().add(emptyMass());
     }
 
     @Override
@@ -75,11 +74,13 @@ abstract class AbstractContainer implements Container {
 
     @Override
     public void load(int bayNo, int rowNo, Pallet elem) {
+        mass = mass.add(elem.mass());
         palletStowage.load(bayNo, rowNo, elem);
     }
 
     @Override
     public void load(Pallet elem) {
+        mass = mass.add(elem.mass());
         palletStowage.load(elem);
     }
 
@@ -105,11 +106,14 @@ abstract class AbstractContainer implements Container {
 
     @Override
     public Pallet get(StowageLocation stowLoc) {
-        return palletStowage.get(stowLoc);
+        Pallet pallet = palletStowage.get(stowLoc);
+        mass = mass.sub(pallet.mass());
+        return pallet;
     }
 
     @Override
     public Set<Pallet> getAll() {
+        mass = mass.sub(palletStowage.mass());
         return palletStowage.getAll();
     }
 

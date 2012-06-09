@@ -4,7 +4,9 @@
  */
 package physobjects.implementation;
 
+import Values.implementation.Values;
 import Values.interfaces.BoundingBox;
+import Values.interfaces.Mass;
 import physobjects.interfaces.Body;
 
 /**
@@ -12,6 +14,7 @@ import physobjects.interfaces.Body;
  * @author abg667
  */
 abstract class AbstractBody implements Body {
-    BoundingBox boundingBox;
+    protected BoundingBox boundingBox = Values.ZERO_BB;
+    protected Mass mass = Values.ZERO_MASS;
     
 }
