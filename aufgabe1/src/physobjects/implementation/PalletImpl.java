@@ -4,6 +4,7 @@
  */
 package physobjects.implementation;
 import Values.implementation.Values;
+import physobjects.interfaces.Pallet;
 /**
  *
  * @author abg667
@@ -14,7 +15,10 @@ final class PalletImpl extends AbstractPallet {
         mass = Values.massInKg(50);
         boundingBox = Values.boundingBoxInM(1.20,0.80, 1.0);
     }
- 
+    static Pallet pallet(){
+        return new PalletImpl();
+    } 
+    
     @Override
     public boolean isFree() {
         return false;
