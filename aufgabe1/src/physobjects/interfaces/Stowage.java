@@ -10,6 +10,6 @@ package physobjects.interfaces;
  *
  * @author abg667
  */
-public interface Stowage<E> extends Mutable, Body, WithCargo, WithForm, Bounded3DimStack<E> {
+public interface Stowage<E> extends Mutable, Body, WithCargo, Bounded3DimStack<E> {
     
 }

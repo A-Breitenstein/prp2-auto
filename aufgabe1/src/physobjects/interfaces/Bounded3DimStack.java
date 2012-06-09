@@ -4,6 +4,7 @@
  */
 package physobjects.interfaces;
 
+import Values.interfaces.Mass;
 import Values.interfaces.StowageLocation;
 import java.util.Collection;
 import java.util.Set;
@@ -32,5 +33,6 @@ public interface Bounded3DimStack<E> extends Mutable {
     E get(StowageLocation stowLoc);
     Set<E> getAll();
     StowageLocation locationOf(E elem);
+    Mass  mass();
      
 }

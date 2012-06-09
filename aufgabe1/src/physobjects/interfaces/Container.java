@@ -8,6 +8,6 @@ package physobjects.interfaces;
  *
  * @author abg667
  */
-public interface Container extends Stowage<Pallet>, WithUniqueID, WithStowLoc<Container>, Comparable<Container> {
+public interface Container extends Stowage<Pallet>, WithUniqueID, WithForm, WithStowLoc<Container>, Comparable<Container> {
     
 }
