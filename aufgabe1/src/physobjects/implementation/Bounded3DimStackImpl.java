@@ -29,23 +29,30 @@ final public class Bounded3DimStackImpl<E> implements Stowage<E> {
     private Mass emptyMass = Values.ZERO_MASS;
     private Mass maxMass = Values.ZERO_MASS;
     private BoundingBox BB = Values.ZERO_BB; 
-    
+    private final int bays,rows,tiers;
 
     //CONSTRUCTOR
     public Bounded3DimStackImpl(int bays,int rows,int tiers){
-       staples = new ArrayList<ArrayList<ArrayList<E>>>();
+       this.bays = bays;
+       this.rows = rows;
+       this.tiers = tiers;
+        
+        staples = new ArrayList<ArrayList<ArrayList<E>>>();
         for(int i = 0;i <= bays;i++){
             staples.add(new ArrayList<ArrayList<E>>());
             for (int j = 0; j <= rows; j++) {
                 staples.get(i).add(new ArrayList<E>());
                 for (int k = 0; k <= tiers; k++) {
-                    staples.get(i).get(j).add(null);
+                    //staples.get(i).get(j).add(null);
                     
                 }
             }
         }
     }
 
+    public static Bounded3DimStackImpl createStowage(int bays,int rows,int tiers){
+        return new Bounded3DimStackImpl(bays,rows,tiers);
+    }
     
     @Override
     public void load(int bayNo, int rowNo, E elem) {

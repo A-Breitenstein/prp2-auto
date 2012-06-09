@@ -17,9 +17,9 @@ public interface Bounded3DimStack<E> extends Mutable {
     
     
     
-    void load(int bayNo,int rowNo, E elem);
-    void load(E elem);
-    //void loadAll(Collection<?> extends E coll);
+    boolean load(int bayNo,int rowNo, E elem);
+    boolean load(E elem);
+    //boolean loadAll(Collection<?> extends E coll);
     
     //Prädikate
     boolean isEmpty();
@@ -33,6 +33,5 @@ public interface Bounded3DimStack<E> extends Mutable {
     E get(StowageLocation stowLoc);
     Set<E> getAll();
     StowageLocation locationOf(E elem);
-    Mass  mass();
      
 }

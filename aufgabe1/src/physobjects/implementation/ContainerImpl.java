@@ -5,15 +5,7 @@
 package physobjects.implementation;
 
 import Values.implementation.Values;
-import Values.interfaces.BoundingBox;
-import Values.interfaces.Mass;
-import Values.interfaces.StowageLocation;
-import Values.interfaces.UniqueID;
-import java.util.Collection;
-import java.util.Set;
 import physobjects.interfaces.Container;
-import physobjects.interfaces.Pallet;
-import physobjects.interfaces.Stowage;
 
 /**
  *

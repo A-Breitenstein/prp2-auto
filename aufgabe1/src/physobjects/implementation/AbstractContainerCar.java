@@ -5,13 +5,13 @@
 package physobjects.implementation;
 
 import Values.interfaces.Mass;
-import java.awt.Container;
+import physobjects.interfaces.Container;
 
 /**
  *
  * @author abg667
  */
-abstract class AbstractContainerCar {
+abstract class AbstractContainerCar extends AbstractBody  {
     Mass emptyMass;
     Container container;
     
