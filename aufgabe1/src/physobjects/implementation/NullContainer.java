@@ -4,6 +4,9 @@
  */
 package physobjects.implementation;
 
+import java.util.Collection;
+import physobjects.interfaces.Pallet;
+
 /**
  *
  * @author abg667
@@ -28,6 +31,11 @@ final class NullContainer extends AbstractContainer{
     @Override
     public boolean isOccupied() {
         return false;
+    }
+// TODO: ?
+    @Override
+    public void loadAll(Collection<? extends Pallet> coll) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     
 }
