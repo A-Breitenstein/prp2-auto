@@ -104,5 +104,10 @@ final class TerminalStowage extends AbstractBody implements ContainerStowage {
     public StowageLocation locationOf(Container elem) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+// TODO: ?
+    @Override
+    public void loadAll(Collection<? extends Container> coll) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
     
 }

@@ -72,12 +72,14 @@ abstract class AbstractContainer extends AbstractBody implements Container {
     }
 
 
+    
     @Override
     public void load(int bayNo, int rowNo, Pallet elem) {
         mass = mass.add(elem.mass());
         palletStowage.load(bayNo, rowNo, elem);
     }
 
+    
     @Override
     public void load(Pallet elem) {
         mass = mass.add(elem.mass());

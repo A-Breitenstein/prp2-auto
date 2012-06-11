@@ -16,10 +16,15 @@ import java.util.Set;
 public interface Bounded3DimStack<E> extends Mutable {
     
     
-    
-    boolean load(int bayNo,int rowNo, E elem);
-    boolean load(E elem);
+    //TODO:boolean?
+//    boolean load(int bayNo,int rowNo, E elem);
+//    boolean load(E elem);
+//    boolean loadAll(Collection<?> extends E coll);
+    void load(int bayNo,int rowNo, E elem);
+    void load(E elem);
     //boolean loadAll(Collection<?> extends E coll);
+    //TODO: void loadAll(Collection<? extends E>  coll);
+    void loadAll(Collection<? extends E>  coll);
     
     //Prädikate
     boolean isEmpty();
