@@ -229,6 +229,11 @@ final public class Bounded3DimStackImpl<E> implements Stowage<E> {
     public Mass maxMass() {
         return maxMass;
     }
+//TODO: ?
+    @Override
+    public void loadAll(Collection<? extends E> coll) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 
     
 }
