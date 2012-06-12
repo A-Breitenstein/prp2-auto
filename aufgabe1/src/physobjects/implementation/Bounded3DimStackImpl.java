@@ -34,7 +34,7 @@ final class Bounded3DimStackImpl<E> implements Stowage<E> {
     
    
     //CONSTRUCTOR
-    public Bounded3DimStackImpl(int bays,int rows,int tiers){
+    public Bounded3DimStackImpl(int bays,int rows,int tiers, ArrayList<E> elem){
        this.bays = bays;
        this.rows = rows;
        this.tiers = tiers;
@@ -45,7 +45,8 @@ final class Bounded3DimStackImpl<E> implements Stowage<E> {
             for (int j = 0; j < rows; j++) {
                 staples.get(i).add(new ArrayList<E>());
                 for (int k = 0; k < tiers; k++) {
-                    //staples.get(i).get(j).add(null);
+                    E elemE = elem.get(k);
+                    staples.get(i).get(j).add(elemE);
                     
                 }
             }
@@ -53,7 +54,29 @@ final class Bounded3DimStackImpl<E> implements Stowage<E> {
     }
 
     public static Bounded3DimStackImpl createStowage(int bays,int rows,int tiers){
-        return new Bounded3DimStackImpl(bays,rows,tiers);
+        
+        return new Bounded3DimStackImpl(bays,rows,tiers,null);
+    }
+    
+    public Bounded3DimStackImpl initStapleContainer(){
+        ArrayList<Container> arrayContainer = new ArrayList<Container>();
+        int i=0;
+        while(i<bays*rows*tiers){
+            Container nc = Physobjects.nullContainer();
+            arrayContainer.add(nc);
+        }
+        return new Bounded3DimStackImpl(bays,rows,tiers,arrayContainer);        
+    }
+    
+    public Bounded3DimStackImpl initStapleNullPallet(){
+        ArrayList<Pallet> arrayPallet = new ArrayList<Pallet>();
+        int i=0;
+        while(i<bays*rows*tiers){
+            Pallet np = Physobjects.nullPallet();
+            arrayPallet.add(np);
+        }
+        
+        return new Bounded3DimStackImpl(bays,rows,tiers,arrayPallet);
     }
     
     @Override
@@ -222,11 +245,11 @@ final class Bounded3DimStackImpl<E> implements Stowage<E> {
     
     public static void main(String[] args) {
 
-        Bounded3DimStack<Pallet> stack = new Bounded3DimStackImpl<Pallet>(5,5,5);
-        stack.load(0, 0, Physobjects.pallet());
-        System.out.println(
-        stack.get(Values.stowageLocation(0,0, 0))
-        );
+//        Bounded3DimStack<Pallet> stack = new Bounded3DimStackImpl<Pallet>(5,5,5);
+//        stack.load(0, 0, Physobjects.pallet());
+//        System.out.println(
+//        stack.get(Values.stowageLocation(0,0, 0))
+//        );
     }
 
     @Override
