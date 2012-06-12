@@ -12,4 +12,5 @@ public interface WithForm {
     boolean isFree();
     boolean isBlocked();
     boolean isOccupied(); 
+    String print();
 }

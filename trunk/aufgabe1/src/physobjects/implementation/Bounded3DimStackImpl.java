@@ -4,6 +4,7 @@
  */
 package physobjects.implementation;
 
+import java.util.List;
 import physobjects.interfaces.Container;
 import physobjects.interfaces.Pallet;
 import Values.implementation.Values;
@@ -34,19 +35,20 @@ final class Bounded3DimStackImpl<E> implements Stowage<E> {
     
    
     //CONSTRUCTOR
-    public Bounded3DimStackImpl(int bays,int rows,int tiers, ArrayList<E> elem){
+    public Bounded3DimStackImpl(int bays,int rows,int tiers, List<E> elem){
        this.bays = bays;
        this.rows = rows;
        this.tiers = tiers;
-        
+       int y =0;
         staples = new ArrayList<ArrayList<ArrayList<E>>>();
         for(int i = 0;i < bays;i++){
             staples.add(new ArrayList<ArrayList<E>>());
             for (int j = 0; j < rows; j++) {
                 staples.get(i).add(new ArrayList<E>());
                 for (int k = 0; k < tiers; k++) {
-                    E elemE = elem.get(k);
+                    E elemE = elem.get(y);
                     staples.get(i).get(j).add(elemE);
+                    y++;
                     
                 }
             }
@@ -300,6 +302,25 @@ final class Bounded3DimStackImpl<E> implements Stowage<E> {
         loaded = false;
         }
         return loaded;
+    }
+
+    @Override
+    public void printStack() {
+        String tmpstr = "";
+        for (int i = 0; i < bays; i++) {
+            tmpstr = tmpstr + "-- B:"+i+"-- { \n";
+            for (int j = 0; j < rows; j++) {
+                tmpstr = tmpstr + "R:"+j+" [";
+                for (int k = 0; k < tiers;k++) {
+                   tmpstr = tmpstr +" "+((WithForm)staples.get(i).get(j).get(k)).print()+" "; 
+                    
+                }
+                tmpstr = tmpstr +"],";
+                if((j+1)%3==0) tmpstr = tmpstr + "\n";
+            }
+           tmpstr = tmpstr +" } \n"; 
+        }
+        System.out.println(tmpstr);
     }
 
     

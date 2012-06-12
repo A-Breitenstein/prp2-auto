@@ -34,5 +34,10 @@ final class PalletImpl extends AbstractPallet {
         return true;
     }
 
+    @Override
+    public String print() {
+        return Physobjects.PALLETSYM;
+    }
+
     
 }
