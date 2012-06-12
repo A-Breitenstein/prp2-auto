@@ -5,6 +5,7 @@
 package physobjects.implementation;
 
 import Values.implementation.Values;
+import Values.interfaces.Mass;
 import java.util.Collection;
 import physobjects.interfaces.Container;
 import physobjects.interfaces.Pallet;
@@ -27,6 +28,11 @@ final class ContainerImpl extends AbstractContainer  {
         return new ContainerImpl();
     } 
     
+    
+    @Override
+    public Mass mass(){
+        return palletStowage.mass().add(emptyMass);        
+    }
     @Override
     public boolean isFree() {
       return  false;

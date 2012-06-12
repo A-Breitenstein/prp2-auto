@@ -4,6 +4,7 @@
  */
 package physobjects.implementation;
 
+import physobjects.interfaces.Container;
 import physobjects.interfaces.Pallet;
 import Values.implementation.Values;
 import Values.interfaces.BoundingBox;
@@ -16,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-import physobjects.interfaces.Container;
 import physobjects.interfaces.WithForm;
 import static Values.implementation.Values.*;
 
@@ -24,13 +24,15 @@ import static Values.implementation.Values.*;
  *
  * @author abg667
  */// 
-final public class Bounded3DimStackImpl<E> implements Stowage<E> {
+final class Bounded3DimStackImpl<E> implements Stowage<E> {
     public ArrayList<ArrayList<ArrayList<E>>> staples;
     private Mass emptyMass = Values.ZERO_MASS;
     private Mass maxMass = Values.ZERO_MASS;
     private BoundingBox BB = Values.ZERO_BB; 
     private final int bays,rows,tiers;
 
+    
+   
     //CONSTRUCTOR
     public Bounded3DimStackImpl(int bays,int rows,int tiers){
        this.bays = bays;
@@ -38,11 +40,11 @@ final public class Bounded3DimStackImpl<E> implements Stowage<E> {
        this.tiers = tiers;
         
         staples = new ArrayList<ArrayList<ArrayList<E>>>();
-        for(int i = 0;i <= bays;i++){
+        for(int i = 0;i < bays;i++){
             staples.add(new ArrayList<ArrayList<E>>());
-            for (int j = 0; j <= rows; j++) {
+            for (int j = 0; j < rows; j++) {
                 staples.get(i).add(new ArrayList<E>());
-                for (int k = 0; k <= tiers; k++) {
+                for (int k = 0; k < tiers; k++) {
                     //staples.get(i).get(j).add(null);
                     
                 }
@@ -55,15 +57,39 @@ final public class Bounded3DimStackImpl<E> implements Stowage<E> {
     }
     
     @Override
-    public void load(int bayNo, int rowNo, E elem) {
-        staples.get(bayNo).get(rowNo).add(elem);
+    public boolean load(int bayNo, int rowNo, E elem) {
+        boolean loadable = false;
+            boolean laufe = true;
+            int tier = 0;
+            for(int i = 0; (i< tiers) &&(laufe);i++){
+                if( ((WithForm)staples.get(bayNo).get(rowNo).get(i)).isFree()){
+                    tier = i;
+                    laufe = false;
+                    loadable = true;
+                }
+            }
+            if(loadable){
+            staples.get(bayNo).get(rowNo).add(tier,elem);
+            }
         
         
+        return loadable;
     }
 
     @Override
-    public void load(E elem) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public boolean load(E elem) {
+        boolean laufe = true,loaded = false;
+        
+        for(int i = 0; (i< bays) &&(laufe);i++){
+            for (int j = 0; (j < rows) &&(laufe); j++) {
+                    if(!(tierIsEmpty(i, j) || tierIsFull(i, j))){
+                        loaded = load(i,j,elem);
+                    }
+            }
+            
+        }
+        return loaded;
+ 
     }
 
     @Override
@@ -121,6 +147,7 @@ final public class Bounded3DimStackImpl<E> implements Stowage<E> {
             for (int j = 0; (j < staples.get(i).size()) &&(laufe); j++) {
                   for (int k = 0;(k < staples.get(i).get(j).size()) &&(laufe); k++) {
                     laufe = !staples.get(i).get(j).get(k).equals(elem);
+                        staples.get(i).get(j).get(k).equals(elem);
                     }
             }
             
@@ -156,8 +183,8 @@ final public class Bounded3DimStackImpl<E> implements Stowage<E> {
     }
 
     @Override
-    public E get(StowageLocation stowLoc) {
-        return staples.get(stowLoc.bay()).get(stowLoc.row()).get(stowLoc.tier());
+    public E get(StowageLocation stowLoc) {  
+        return   staples.get(stowLoc.bay()).get(stowLoc.row()).get(stowLoc.tier());    
     }
     
 
@@ -233,6 +260,23 @@ final public class Bounded3DimStackImpl<E> implements Stowage<E> {
     @Override
     public void loadAll(Collection<? extends E> coll) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public boolean load(int bayNo, int rowNo, int tierNo, E elem) {
+        boolean loaded = false;
+        if( (0 >= bayNo) && (bayNo < bays) &&
+           (0 >= rowNo) && (rowNo < rows) &&
+           (0 >= tierNo) && (tierNo < tiers) ){
+            if(((WithForm)staples.get(bayNo).get(rowNo).get(tierNo)).isFree()){
+            staples.get(bayNo).get(rowNo).add(tierNo,elem);
+            loaded = true;
+            }
+        
+       }else{
+        loaded = false;
+        }
+        return loaded;
     }
 
     
