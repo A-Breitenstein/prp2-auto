@@ -21,7 +21,7 @@ import physobjects.interfaces.Stowage;
  */
 abstract class AbstractContainer extends AbstractBody implements Container {
    
-    protected Stowage<Pallet> palletStowage ; //SOLANGE HIER NIX DRIN HÄNGT NULLPOINTER
+    protected Stowage<Pallet> palletStowage = Physobjects.nullPalletStowage(); 
     protected Mass emptyMass = Values.ZERO_MASS;
     protected Mass maxMass = Values.ZERO_MASS;
     protected final UniqueID uID = Values.uniqueID();
@@ -32,17 +32,8 @@ abstract class AbstractContainer extends AbstractBody implements Container {
     
     @Override
     public Mass mass() {
-//        for (int i = 0; i < palletStowage.; i++) {
-//            for (int j = 0; j < arr.length; j++) {
-//                for (int k = 0; k < 10; k++) {
-//                    
-//                }
-//                
-//            }
-//            
-//        }
-//        return Values.ZERO_MASS;
-        return palletStowage.mass().add(emptyMass());
+
+        return emptyMass;
     }
 
     @Override
@@ -74,17 +65,26 @@ abstract class AbstractContainer extends AbstractBody implements Container {
 
     
     @Override
-    public void load(int bayNo, int rowNo, Pallet elem) {
-        mass = mass.add(elem.mass());
-        palletStowage.load(bayNo, rowNo, elem);
+    public boolean load(int bayNo, int rowNo, Pallet elem) {
+        boolean tmp = palletStowage.load(bayNo, rowNo, elem);
+        if(tmp) mass = mass.add(elem.mass());
+        return tmp;
     }
 
     
     @Override
-    public void load(Pallet elem) {
-        mass = mass.add(elem.mass());
-        palletStowage.load(elem);
+    public boolean load(Pallet elem) {
+        
+        boolean tmp = palletStowage.load(elem);
+        if(tmp) mass = mass.add(elem.mass());
+        return tmp;
+        
     }
+    @Override
+    public boolean load(int bayNo, int rowNo, int tierNo, Pallet elem) {
+        return palletStowage.load(bayNo, rowNo, tierNo, elem);
+    }
+    
 
     @Override
     public boolean tierIsEmpty(int bay, int row) {
@@ -149,5 +149,22 @@ abstract class AbstractContainer extends AbstractBody implements Container {
     public int compareTo(Container o) {
         return uniqueID().compareTo(o.uniqueID());
     }
-     
+    @Override
+    public boolean equals(Object o){
+        if(this == o) return true;
+        if(!(o instanceof Container)) return false;
+        return this.compareTo(((Container)o)) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 29 * hash + (this.uID != null ? this.uID.hashCode() : 0);
+        return hash;
+    }
+    
+    @Override
+    public String toString(){
+        return this.getClass().getSimpleName()+":  id: "+this.uniqueID();
+    }
 }

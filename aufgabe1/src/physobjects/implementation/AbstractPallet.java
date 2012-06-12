@@ -63,7 +63,24 @@ abstract class AbstractPallet extends AbstractBody implements Pallet {
     
     @Override
     public String toString(){
-        return this.getClass().getSimpleName()+": "+uniqueID();
+        return this.getClass().getSimpleName()+": id: "+uniqueID();
     }
+    
+    @Override
+    public boolean equals(Object o){
+        if(this == o) return true;
+        if(!(o instanceof Container)) return false;
+        return this.compareTo(((Pallet)o)) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 29 * hash + (this.uID != null ? this.uID.hashCode() : 0);
+        return hash;
+    }
+    
+    
+    
   
 }

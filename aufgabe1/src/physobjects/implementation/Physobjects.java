@@ -57,7 +57,12 @@ public final class Physobjects {
     public static ContainerStowage containerTerminal(int bays,int rows,int tiers){
         return TerminalStowage.createTerminalStowage(bays, rows, tiers);
     }
-    
+    public static Stowage<Pallet> nullPalletStowage(){
+        return new Bounded3DimStackImpl<Pallet>(0,0,0);
+    }
+    public static Stowage<Container> nullContainerStowage(){
+        return new Bounded3DimStackImpl<Container>(0,0,0);
+    }
     
     //VEHICLES
     public static ContainerTruck containerTruck(Engine engine,Speed maxSpeed){
@@ -90,6 +95,9 @@ public final class Physobjects {
         a.load(0,0,pallet());
         System.out.println(a.get(loc));
         System.out.println("Masse:"+a.mass()+" kg");
-        
+        if(!(a.isEmpty()))
+            System.out.println("Nö");
+        if((a.isFull()))
+            System.out.println("JA");
     }
 }
