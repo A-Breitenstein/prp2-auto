@@ -37,5 +37,10 @@ final class NullContainer extends AbstractContainer{
     public void loadAll(Collection<? extends Pallet> coll) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+    @Override
+    public String print() {
+        return Physobjects.NULLCONTAINERSYM;
+    }
     
 }

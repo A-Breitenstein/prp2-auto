@@ -145,4 +145,9 @@ final class TerminalStowage extends AbstractBody implements ContainerStowage {
     public boolean load(int bayNo, int rowNo, int tierNo, Container elem) {
         return containerStowage.load(bayNo, rowNo, tierNo, elem);
     }
+
+    @Override
+    public void printStack() {
+        containerStowage.printStack();
+    }
 }

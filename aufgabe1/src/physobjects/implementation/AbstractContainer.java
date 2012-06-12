@@ -167,4 +167,8 @@ abstract class AbstractContainer extends AbstractBody implements Container {
     public String toString(){
         return this.getClass().getSimpleName()+":  id: "+this.uniqueID();
     }
+   @Override
+    public void printStack() {
+        palletStowage.printStack();
+    }
 }

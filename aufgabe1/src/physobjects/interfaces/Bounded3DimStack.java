@@ -39,5 +39,7 @@ public interface Bounded3DimStack<E> extends Mutable {
     E get(StowageLocation stowLoc);
     Set<E> getAll();
     StowageLocation locationOf(E elem);
+    void printStack();
+    
      
 }

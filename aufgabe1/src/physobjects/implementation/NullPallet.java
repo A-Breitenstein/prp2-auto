@@ -32,6 +32,11 @@ final class NullPallet extends AbstractPallet {
         return false;
     }
 
+    @Override
+    public String print() {
+        return Physobjects.NULLPALLETSYM;
+    }
+
 
     
 }
