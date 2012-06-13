@@ -49,7 +49,7 @@ final class ContainerImpl extends AbstractContainer  {
     }
 //TODO: ?
     @Override
-    public void loadAll(Collection<? extends Pallet> coll) {
+    public boolean loadAll(Collection<? extends Pallet> coll) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

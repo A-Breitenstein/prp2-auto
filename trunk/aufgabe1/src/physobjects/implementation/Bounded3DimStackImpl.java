@@ -283,8 +283,16 @@ final class Bounded3DimStackImpl<E> implements Stowage<E> {
     }
 //TODO: ?
     @Override
-    public void loadAll(Collection<? extends E> coll) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public boolean loadAll(Collection<? extends E> coll) {
+        boolean loaded = false;
+        if(coll.size() <= freeSpace()){
+            for (E e : coll) {
+                load(e);
+            }
+            
+        loaded = true;
+        }
+        return loaded;
     }
 
     @Override
@@ -322,6 +330,23 @@ final class Bounded3DimStackImpl<E> implements Stowage<E> {
         }
         System.out.println(tmpstr);
     }
+    
+    public int freeSpace(){
+        int space = 0;
 
+        for (int i = 0; i < bays; i++) {
+
+            for (int j = 0; j < rows; j++) {
+
+                for (int k = 0; k < tiers;k++) {
+                    if(((WithForm)staples.get(i).get(j).get(k)).isFree())
+                        space++;
+                   }
+            }
+        }
+        return space;
+    }
     
 }
+
+
