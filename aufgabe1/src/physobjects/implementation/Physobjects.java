@@ -58,19 +58,10 @@ public final class Physobjects {
     }
     //STOWAGE OBJECTS // erstmal mit public Konstrucktor weil generics ka :/
     public static Stowage<Pallet> palletStowage(){
-        List<Pallet> tmp = new ArrayList<Pallet>();
-        for(int i = 0;i<=3*9;i++){
-            tmp.add(nullPallet());
-        }
-        return new Bounded3DimStackImpl<Pallet>(1,9,3,tmp);
+        return new Bounded3DimStackImpl<Pallet>(1,9,3,initStapleNullPallet(1, 9,3));
     }
-    public static Stowage<Container> containerStowage(int bays,int rows,int tiers){
-        List<Container> tmp = new ArrayList<Container>();
-        for(int i = 0;i<=(bays*rows*tiers);i++){
-            tmp.add(nullContainer());
-        }
-            
-        return new Bounded3DimStackImpl<Container>(bays, rows, tiers,tmp);
+    public static Stowage<Container> containerStowage(int bays,int rows,int tiers){    
+        return new Bounded3DimStackImpl<Container>(bays, rows, tiers,initStapleContainer(bays, rows, tiers));
     }
     public static ContainerStowage containerTerminal(int bays,int rows,int tiers){
         return TerminalStowage.createTerminalStowage(bays, rows, tiers);
@@ -81,6 +72,34 @@ public final class Physobjects {
     public static Stowage<Container> nullContainerStowage(){
         return new Bounded3DimStackImpl<Container>(0,0,0,null);
     }
+    
+    private static List<Container> initStapleContainer(int bays,int rows,int tiers){
+        List<Container> arrayContainer = new ArrayList<Container>();
+        int i=0;
+        int elem_count = bays*rows*tiers;
+        while(i<elem_count){
+            Container nc = Physobjects.nullContainer();
+            arrayContainer.add(nc);
+            i++;
+        }
+        return arrayContainer;        
+    }
+    
+   private static List<Pallet> initStapleNullPallet(int bays,int rows,int tiers){
+        List<Pallet> arrayPallet = new ArrayList<Pallet>();
+        int i=0;
+       int elem_count = bays*rows*tiers;
+        while(i<elem_count){
+            Pallet np = Physobjects.nullPallet();
+            arrayPallet.add(np);
+            i++;
+        }
+        
+        return arrayPallet;
+    }
+    
+    
+    
     
     //VEHICLES
     public static ContainerTruck containerTruck(Engine engine,Speed maxSpeed){
@@ -171,7 +190,14 @@ public final class Physobjects {
         aP.add(pallet());
         a.loadAll(aP);
             
-        
+        List<Container> b = new ArrayList<Container>();
+        getContainer(0, 1, 2, b);
+        b.get(0).printStack();
        
+    }
+    
+    public static boolean getContainer(int bay,int row,int tier,List<Container> lc){
+        lc.add(Physobjects.container());
+        return false;
     }
 }

@@ -4,6 +4,7 @@
  */
 package physobjects.implementation;
 
+import physobjects.interfaces.WithStowLoc;
 import java.util.List;
 import physobjects.interfaces.Container;
 import physobjects.interfaces.Pallet;
@@ -60,27 +61,6 @@ final class Bounded3DimStackImpl<E> implements Stowage<E> {
         return new Bounded3DimStackImpl(bays,rows,tiers,null);
     }
     
-    public Bounded3DimStackImpl initStapleContainer(){
-        ArrayList<Container> arrayContainer = new ArrayList<Container>();
-        int i=0;
-        while(i<bays*rows*tiers){
-            Container nc = Physobjects.nullContainer();
-            arrayContainer.add(nc);
-        }
-        return new Bounded3DimStackImpl(bays,rows,tiers,arrayContainer);        
-    }
-    
-    public Bounded3DimStackImpl initStapleNullPallet(){
-        ArrayList<Pallet> arrayPallet = new ArrayList<Pallet>();
-        int i=0;
-        while(i<bays*rows*tiers){
-            Pallet np = Physobjects.nullPallet();
-            arrayPallet.add(np);
-        }
-        
-        return new Bounded3DimStackImpl(bays,rows,tiers,arrayPallet);
-    }
-    
     @Override
     public boolean load(int bayNo, int rowNo, E elem) {
         boolean loadable = false;
@@ -93,7 +73,7 @@ final class Bounded3DimStackImpl<E> implements Stowage<E> {
                     loadable = true;
                 }
             }
-            if(loadable){
+            if(loadable){     
             staples.get(bayNo).get(rowNo).add(tier,elem);
             }
         
@@ -315,8 +295,8 @@ final class Bounded3DimStackImpl<E> implements Stowage<E> {
            (0 >= rowNo) && (rowNo < rows) &&
            (0 >= tierNo) && (tierNo < tiers) ){
             if(((WithForm)staples.get(bayNo).get(rowNo).get(tierNo)).isFree()){
-            staples.get(bayNo).get(rowNo).add(tierNo,elem);
-            loaded = true;
+                staples.get(bayNo).get(rowNo).add(tierNo,elem);
+                loaded = true;
             }
         
        }else{
