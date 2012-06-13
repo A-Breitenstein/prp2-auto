@@ -119,7 +119,7 @@ final class TerminalStowage extends AbstractBody implements ContainerStowage {
     }
 // TODO: ?
     @Override
-    public boolean loadAll(Collection<? extends Container> coll) {
+    public boolean loadAll(Collection<Container> coll) {
         return containerStowage.loadAll(coll);
     }
     

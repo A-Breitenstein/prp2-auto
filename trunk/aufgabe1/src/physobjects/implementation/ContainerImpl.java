@@ -47,14 +47,15 @@ final class ContainerImpl extends AbstractContainer  {
     public boolean isOccupied() {
         return true;
     }
-//TODO: ?
-    @Override
-    public boolean loadAll(Collection<? extends Pallet> coll) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
 
     @Override
     public String print() {
         return Physobjects.CONTAINERSYM;
     }
+
+    @Override
+    public boolean loadAll(Collection<Pallet> coll) {
+        return palletStowage.loadAll(coll);
+    }
+
 }

@@ -124,5 +124,54 @@ public final class Physobjects {
             System.out.println("Nö");
         if((a.isFull()))
             System.out.println("JA");
+        
+        ArrayList<Pallet> aP = new ArrayList<Pallet>();
+        aP.add(pallet());
+        aP.add(pallet());
+        a.loadAll(aP);
+        aP.add(pallet());
+        aP.add(pallet());
+        aP.add(pallet());
+        aP.add(pallet());
+        aP.add(pallet());
+        aP.add(pallet());
+        aP.add(pallet());
+        aP.add(pallet());
+        aP.add(pallet());
+        aP.add(pallet());
+        aP.add(pallet());
+        aP.add(pallet());
+        aP.add(pallet());
+        aP.add(pallet());
+        aP.add(pallet());
+        aP.add(pallet());
+        aP.add(pallet());
+        aP.add(pallet());
+        aP.add(pallet());
+        aP.add(pallet());
+        aP.add(pallet());
+        aP.add(pallet());
+        aP.add(pallet());
+        aP.add(pallet());
+        aP.add(pallet());
+        aP.add(pallet());
+        aP.add(pallet());
+        aP.add(pallet());
+        aP.add(pallet());
+        aP.add(pallet());
+        aP.add(pallet());
+        aP.add(pallet());
+        aP.add(pallet());
+        aP.add(pallet());
+        aP.add(pallet());
+        aP.add(pallet());
+        aP.add(pallet());
+        aP.add(pallet());
+        aP.add(pallet());
+        aP.add(pallet());
+        a.loadAll(aP);
+            
+        
+       
     }
 }

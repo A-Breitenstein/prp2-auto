@@ -208,8 +208,19 @@ final class Bounded3DimStackImpl<E> implements Stowage<E> {
     }
 
     @Override
-    public E get(StowageLocation stowLoc) {  
-        return   staples.get(stowLoc.bay()).get(stowLoc.row()).get(stowLoc.tier());    
+    public E get(StowageLocation stowLoc) {
+        
+        int bay, row,tier;
+        
+        bay  = stowLoc.bay();
+        row  = stowLoc.row();      
+        tier = stowLoc.tier();
+        if((bay <= bays) && (row <= rows) && (tier <= tiers)){
+            
+            if(((WithForm) staples.get(stowLoc.bay()).get(stowLoc.row()).get(stowLoc.tier()+1)).isFree()) 
+            return staples.get(stowLoc.bay()).get(stowLoc.row()).get(stowLoc.tier());
+        }
+        return null;
     }
     
 
@@ -246,12 +257,6 @@ final class Bounded3DimStackImpl<E> implements Stowage<E> {
     
     
     public static void main(String[] args) {
-
-//        Bounded3DimStack<Pallet> stack = new Bounded3DimStackImpl<Pallet>(5,5,5);
-//        stack.load(0, 0, Physobjects.pallet());
-//        System.out.println(
-//        stack.get(Values.stowageLocation(0,0, 0))
-//        );
     }
 
     @Override
@@ -283,7 +288,7 @@ final class Bounded3DimStackImpl<E> implements Stowage<E> {
     }
 //TODO: ?
     @Override
-    public boolean loadAll(Collection<? extends E> coll) {
+    public boolean loadAll(Collection<E> coll) {
         boolean loaded = false;
         if(coll.size() <= freeSpace()){
             for (E e : coll) {
@@ -292,6 +297,14 @@ final class Bounded3DimStackImpl<E> implements Stowage<E> {
             
         loaded = true;
         }
+        String output;
+        if(loaded){
+            output = coll.size()+" Palleten geladen!";
+        }else{
+            output = "Keine Palleten geladen, nicht genug Platz vorhanden!";    
+        }
+        
+        System.out.println(output);
         return loaded;
     }
 
@@ -346,7 +359,7 @@ final class Bounded3DimStackImpl<E> implements Stowage<E> {
         }
         return space;
     }
-    
+
 }
 
 

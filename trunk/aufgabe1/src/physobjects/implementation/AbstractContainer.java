@@ -171,4 +171,8 @@ abstract class AbstractContainer extends AbstractBody implements Container {
     public void printStack() {
         palletStowage.printStack();
     }
+   @Override
+   public boolean loadAll(Collection<Pallet> coll) {
+        return false;
+    }
 }
