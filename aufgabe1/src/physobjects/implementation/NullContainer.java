@@ -32,11 +32,6 @@ final class NullContainer extends AbstractContainer{
     public boolean isOccupied() {
         return false;
     }
-// TODO: ?
-    @Override
-    public boolean loadAll(Collection<? extends Pallet> coll) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
 
     @Override
     public String print() {
