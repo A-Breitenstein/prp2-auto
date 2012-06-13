@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import physobjects.interfaces.WithForm;
+import physobjects.interfaces.WithUniqueID;
 import static Values.implementation.Values.*;
 
 /**
@@ -73,14 +74,32 @@ final class Bounded3DimStackImpl<E> implements Stowage<E> {
                     loadable = true;
                 }
             }
-            if(loadable){     
-            staples.get(bayNo).get(rowNo).add(tier,elem);
+            if(loadable){
+            //staples.get(bayNo).get(rowNo).set(tier,elem);
+            load(bayNo, rowNo, tier, elem);
             }
         
         
         return loadable;
     }
-
+    @Override
+    public boolean load(int bayNo, int rowNo, int tierNo, E elem) {
+        boolean loaded = false;
+        if( isGivenStowageLocationValid(bayNo, rowNo, tierNo) ){
+            if(((WithForm)staples.get(bayNo).get(rowNo).get(tierNo)).isFree()){
+                ((WithStowLoc)elem).setLoc(this, Values.stowageLocation(bayNo, rowNo, tierNo));
+                staples.get(bayNo).get(rowNo).set(tierNo,elem);
+                loaded = true;
+                if(Physobjects.DEBUG){
+                    System.out.println(elem.getClass().getSimpleName()+((WithUniqueID)elem).uniqueID()+": Loaded in: b: "+bayNo+" r: "+rowNo+" t: "+tierNo);
+                }
+            }
+        
+       }else{
+        loaded = false;
+        }
+        return loaded;
+    }
     @Override
     public boolean load(E elem) {
         boolean laufe = true,loaded = false;
@@ -96,7 +115,11 @@ final class Bounded3DimStackImpl<E> implements Stowage<E> {
         return loaded;
  
     }
-
+    private boolean isGivenStowageLocationValid(int bayNo, int rowNo, int tierNo){
+        return ( (0 <= bayNo) && (bayNo < bays) &&
+                 (0 <= rowNo) && (rowNo < rows) &&
+                 (0 <= tierNo) && (tierNo < tiers) );
+    }
     @Override
     public boolean isEmpty() {
         
@@ -195,9 +218,9 @@ final class Bounded3DimStackImpl<E> implements Stowage<E> {
         bay  = stowLoc.bay();
         row  = stowLoc.row();      
         tier = stowLoc.tier();
-        if((bay <= bays) && (row <= rows) && (tier <= tiers)){
+        if((bay < bays) && (row < rows) && (tier < tiers)){
             
-            if(((WithForm) staples.get(stowLoc.bay()).get(stowLoc.row()).get(stowLoc.tier()+1)).isFree()) 
+            if(((WithForm) staples.get(bay).get(row).get(tier)).isOccupied()) 
             return staples.get(stowLoc.bay()).get(stowLoc.row()).get(stowLoc.tier());
         }
         return null;
@@ -285,23 +308,6 @@ final class Bounded3DimStackImpl<E> implements Stowage<E> {
         }
         
         System.out.println(output);
-        return loaded;
-    }
-
-    @Override
-    public boolean load(int bayNo, int rowNo, int tierNo, E elem) {
-        boolean loaded = false;
-        if( (0 >= bayNo) && (bayNo < bays) &&
-           (0 >= rowNo) && (rowNo < rows) &&
-           (0 >= tierNo) && (tierNo < tiers) ){
-            if(((WithForm)staples.get(bayNo).get(rowNo).get(tierNo)).isFree()){
-                staples.get(bayNo).get(rowNo).add(tierNo,elem);
-                loaded = true;
-            }
-        
-       }else{
-        loaded = false;
-        }
         return loaded;
     }
 

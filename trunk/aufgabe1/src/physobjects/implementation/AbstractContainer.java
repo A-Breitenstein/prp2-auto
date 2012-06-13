@@ -26,7 +26,7 @@ abstract class AbstractContainer extends AbstractBody implements Container {
     protected Mass maxMass = Values.ZERO_MASS;
     protected final UniqueID uID = Values.uniqueID();
     protected StowageLocation loc = Values.ZERO_STOWAGELOC;
-    protected Container StowageReference;
+    protected Stowage<Container> StowageReference;
     
 
     
@@ -140,7 +140,7 @@ abstract class AbstractContainer extends AbstractBody implements Container {
     }
 
     @Override
-    public void setLoc(Container stowage, StowageLocation loc) {
+    public void setLoc(Stowage<Container> stowage, StowageLocation loc) {
         this.loc = loc; 
         this.StowageReference = stowage;
     }

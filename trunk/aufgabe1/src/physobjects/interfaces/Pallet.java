@@ -11,6 +11,6 @@ import Values.interfaces.Immutable;
  *
  * @author abg667
  */
-public interface Pallet extends Immutable, Body, WithUniqueID, WithStowLoc<Container>, WithForm, Comparable<Pallet> {
+public interface Pallet extends Immutable, Body, WithUniqueID, WithStowLoc<Stowage<Pallet>>, WithForm, Comparable<Pallet> {
     
 }
