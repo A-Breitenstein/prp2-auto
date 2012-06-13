@@ -26,6 +26,9 @@ import physobjects.interfaces.VanCarrier;
  * @author abg667
  */
 public final class Physobjects {
+    //DEBUG
+    public static final boolean DEBUG = true;
+    
     //PRINT SYMBOLS
     public static final String CONTAINERSYM = "SC";
     public static final String NULLCONTAINERSYM = "0C";
@@ -125,16 +128,17 @@ public final class Physobjects {
     
     public static void main(String[] args) {
         Container a = container();
-        StowageLocation loc = Values.stowageLocation(0, 0, 3);
+        Pallet testpallet = pallet();
+        StowageLocation loc = Values.stowageLocation(0, 0, 2);
+        a.load(0,0,pallet());
+        a.load(0,0,pallet());
         a.load(0,0,pallet());
         a.printStack();
-        a.load(0,0,pallet());
-        a.load(0,0,pallet());
         if(!a.load(0,0,pallet()))
             System.out.println("pallet ging nicht in b0r0 rein");;
         a.load(0,7,pallet());
         a.load(0,5,pallet());
-        a.printStack();
+        a.printStack();      
         System.out.println("Masse: vor get "+a.mass()+" kg");
         System.out.println(a.get(loc));
         System.out.println("Masse: nach get "+a.mass()+" kg");
@@ -193,7 +197,13 @@ public final class Physobjects {
         List<Container> b = new ArrayList<Container>();
         getContainer(0, 1, 2, b);
         b.get(0).printStack();
-       
+        
+         a.load(0,4,testpallet);
+        System.out.println(testpallet.loc());
+       ContainerStowage terminalStowage = containerTerminal(3, 9, 3);
+       Container testContainer = container();
+       terminalStowage.load(testContainer);
+        System.out.println(testContainer.loc());
     }
     
     public static boolean getContainer(int bay,int row,int tier,List<Container> lc){
