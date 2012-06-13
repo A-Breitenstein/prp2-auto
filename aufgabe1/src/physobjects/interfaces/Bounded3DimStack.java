@@ -25,7 +25,7 @@ public interface Bounded3DimStack<E> extends Mutable {
     boolean load(int bayNo,int rowNo,int tierNo, E elem);
     //boolean loadAll(Collection<?> extends E coll);
     //TODO: void loadAll(Collection<? extends E>  coll);
-    void loadAll(Collection<? extends E>  coll);
+    boolean loadAll(Collection<? extends E>  coll);
     
     //Prädikate
     boolean isEmpty();

@@ -119,8 +119,8 @@ final class TerminalStowage extends AbstractBody implements ContainerStowage {
     }
 // TODO: ?
     @Override
-    public void loadAll(Collection<? extends Container> coll) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public boolean loadAll(Collection<? extends Container> coll) {
+        return containerStowage.loadAll(coll);
     }
     
     public static void main(String[] args) {
