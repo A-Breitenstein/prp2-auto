@@ -24,7 +24,7 @@ import Values.implementation.Values.*;
 import Values.interfaces.UniqueID;
 
 /**
- *
+ * Hmmm Hallo SVN huhu!!!!
  * @author abg667
  */// 
 final class Bounded3DimStackImpl<E> implements Stowage<E> {
@@ -39,6 +39,7 @@ final class Bounded3DimStackImpl<E> implements Stowage<E> {
    
     //CONSTRUCTOR
     public Bounded3DimStackImpl(int bays,int rows,int tiers, List<E> elem, Object o){
+
        checkArgument(true);
        stowageReference = o;
        this.bays = bays;
