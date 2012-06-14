@@ -13,6 +13,7 @@ import Values.interfaces.UniqueID;
 import java.util.Collection;
 import java.util.Set;
 import physobjects.interfaces.Container;
+import physobjects.interfaces.ContainerStowage;
 import physobjects.interfaces.Pallet;
 import physobjects.interfaces.Stowage;
 /**
@@ -26,7 +27,7 @@ abstract class AbstractContainer extends AbstractBody implements Container {
     protected Mass maxMass = Values.ZERO_MASS;
     protected final UniqueID uID = Values.uniqueID();
     protected StowageLocation loc = Values.ZERO_STOWAGELOC;
-    protected Stowage<Container> StowageReference;
+    protected ContainerStowage StowageReference;
     
 
     
@@ -85,6 +86,11 @@ abstract class AbstractContainer extends AbstractBody implements Container {
         return palletStowage.load(bayNo, rowNo, tierNo, elem);
     }
     
+    
+    @Override
+    public boolean containsAll(Collection<? extends Pallet> coll) {
+        return palletStowage.containsAll(coll);
+    }
 
     @Override
     public boolean tierIsEmpty(int bay, int row) {
@@ -101,16 +107,20 @@ abstract class AbstractContainer extends AbstractBody implements Container {
         return palletStowage.contains(elem);
     }
 
-    @Override
-    public boolean containsAll(Collection<?> coll) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
 
     @Override
     public Pallet get(StowageLocation stowLoc) {
-        Pallet pallet = palletStowage.get(stowLoc);
-        mass = mass.sub(pallet.mass());
-        return pallet;
+        
+        Pallet nTemp = Physobjects.nonPallet();
+        
+        Pallet temp = palletStowage.get(stowLoc);
+        if(temp == null){
+            return nTemp;
+        }else{
+            palletStowage.load(stowLoc,nTemp);
+             mass = mass.sub(temp.mass());
+        }
+        return temp;
     }
 
     @Override
@@ -140,7 +150,7 @@ abstract class AbstractContainer extends AbstractBody implements Container {
     }
 
     @Override
-    public void setLoc(Stowage<Container> stowage, StowageLocation loc) {
+    public void setLoc(ContainerStowage stowage, StowageLocation loc) {
         this.loc = loc; 
         this.StowageReference = stowage;
     }
@@ -169,10 +179,22 @@ abstract class AbstractContainer extends AbstractBody implements Container {
     }
    @Override
     public void printStack() {
+       System.out.println(this.getClass().getSimpleName()+": "+uniqueID()+"\n[");
         palletStowage.printStack();
+        System.out.println("]");
     }
    @Override
    public boolean loadAll(Collection<Pallet> coll) {
         return false;
     }
+    @Override
+    public boolean load(StowageLocation loc, Pallet elem) {
+        return load(loc.bay(),loc.row(), loc.tier(), elem);
+    }
+    @Override
+    public ContainerStowage getStowageReference() {
+        return StowageReference;
+    }
+    
+   
 }

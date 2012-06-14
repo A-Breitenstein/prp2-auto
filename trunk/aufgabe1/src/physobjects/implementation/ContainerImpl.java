@@ -6,8 +6,10 @@ package physobjects.implementation;
 
 import Values.implementation.Values;
 import Values.interfaces.Mass;
+import Values.interfaces.StowageLocation;
 import java.util.Collection;
 import physobjects.interfaces.Container;
+import physobjects.interfaces.ContainerStowage;
 import physobjects.interfaces.Pallet;
 
 /**
@@ -21,7 +23,7 @@ final class ContainerImpl extends AbstractContainer  {
        emptyMass = Values.massInKg(2250);
        maxMass = Values.massInKg(24000);
        boundingBox = Values.boundingBoxInM(6.058,2.438,2.591);
-       palletStowage = Physobjects.palletStowage();
+       palletStowage = Physobjects.palletStowage(this);
     }
     
     static Container createContainer(){
