@@ -41,6 +41,7 @@ public class Bounded3DimStackImplTest {
     public void tearDown() {
     }
 //##############################################################################
+    
     private static List<Pallet> initStaplePallet(int bays,int rows,int tiers){
         List<Pallet> arrayPallet = new ArrayList<Pallet>();
         int i=0;
@@ -95,12 +96,13 @@ public class Bounded3DimStackImplTest {
 
     @Test
     public void test_tierIsEmpty() {
+        assertEquals(true, a.tierIsEmpty(0, 0));
        
     }
 
     @Test
     public void test_tierIsFull() {
-        
+        assertEquals(true, b.tierIsFull(0, 0));
     }
 
     @Test
