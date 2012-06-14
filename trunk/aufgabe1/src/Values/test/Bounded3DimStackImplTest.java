@@ -89,6 +89,7 @@ public class Bounded3DimStackImplTest {
 
     @Test
     public void test_isFull() {
+        assertEquals(true, b.isFull());
         
     }
 
