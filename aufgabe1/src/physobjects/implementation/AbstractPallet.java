@@ -23,7 +23,7 @@ import physobjects.interfaces.Stowage;
 abstract class AbstractPallet extends AbstractBody implements Pallet {
     //protected Stowage<carton> cartonStowage = Physobjects.nullCartonStowage(); 
     protected StowageLocation loc = Values.ZERO_STOWAGELOC;
-    protected Stowage<Pallet> StowageReference;
+    protected Container StowageReference;
     final protected UniqueID uID = Values.uniqueID();
     protected Mass mass = Values.ZERO_MASS;
     
@@ -53,7 +53,7 @@ abstract class AbstractPallet extends AbstractBody implements Pallet {
     }
 
     @Override
-    public void setLoc(Stowage<Pallet> stowage, StowageLocation loc) {
+    public void setLoc(Container stowage, StowageLocation loc) {
         this.loc = loc; 
         this.StowageReference = stowage;
     }
@@ -83,6 +83,9 @@ abstract class AbstractPallet extends AbstractBody implements Pallet {
     }
     
     
-    
+        @Override
+    public Container getStowageReference() {
+        return StowageReference;
+    }
   
 }

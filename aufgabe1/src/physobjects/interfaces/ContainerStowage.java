@@ -4,10 +4,12 @@
  */
 package physobjects.interfaces;
 
+import Values.interfaces.UniqueID;
+
 /**
  *
  * @author abg667
  */
-public interface ContainerStowage extends Stowage<Container> {
+public interface ContainerStowage extends Stowage<Container>,WithUniqueID {
     
 }

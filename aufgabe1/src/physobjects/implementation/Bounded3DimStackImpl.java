@@ -6,14 +6,11 @@ package physobjects.implementation;
 
 import physobjects.interfaces.WithStowLoc;
 import java.util.List;
-import physobjects.interfaces.Container;
-import physobjects.interfaces.Pallet;
 import Values.implementation.Values;
 import Values.interfaces.BoundingBox;
 import physobjects.interfaces.Body;
 import Values.interfaces.Mass;
 import physobjects.interfaces.Stowage;
-import physobjects.interfaces.Bounded3DimStack;
 import Values.interfaces.StowageLocation;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,7 +18,10 @@ import java.util.HashSet;
 import java.util.Set;
 import physobjects.interfaces.WithForm;
 import physobjects.interfaces.WithUniqueID;
-import static Values.implementation.Values.*;
+import static com.google.common.base.Preconditions.*;
+import com.google.common.base.Predicates;
+import Values.implementation.Values.*;
+import Values.interfaces.UniqueID;
 
 /**
  *
@@ -33,11 +33,14 @@ final class Bounded3DimStackImpl<E> implements Stowage<E> {
     private Mass maxMass = Values.ZERO_MASS;
     private BoundingBox BB = Values.ZERO_BB; 
     private final int bays,rows,tiers;
+    private final Object stowageReference;
 
-    
+
    
     //CONSTRUCTOR
-    public Bounded3DimStackImpl(int bays,int rows,int tiers, List<E> elem){
+    public Bounded3DimStackImpl(int bays,int rows,int tiers, List<E> elem, Object o){
+       checkArgument(true);
+       stowageReference = o;
        this.bays = bays;
        this.rows = rows;
        this.tiers = tiers;
@@ -49,6 +52,7 @@ final class Bounded3DimStackImpl<E> implements Stowage<E> {
                 staples.get(i).add(new ArrayList<E>());
                 for (int k = 0; k < tiers; k++) {
                     E elemE = elem.get(y);
+                    ((WithStowLoc)elemE).setLoc(stowageReference, Values.stowageLocation(i, j, k));
                     staples.get(i).get(j).add(elemE);
                     y++;
                     
@@ -57,57 +61,53 @@ final class Bounded3DimStackImpl<E> implements Stowage<E> {
         }
     }
 
-    public static Bounded3DimStackImpl createStowage(int bays,int rows,int tiers){
+    public static Bounded3DimStackImpl createStowage(int bays,int rows,int tiers,Object caller){
         
-        return new Bounded3DimStackImpl(bays,rows,tiers,null);
+        return new Bounded3DimStackImpl(bays,rows,tiers,null,caller);
     }
     
     @Override
     public boolean load(int bayNo, int rowNo, E elem) {
-        boolean loadable = false;
-            boolean laufe = true;
-            int tier = 0;
-            for(int i = 0; (i< tiers) &&(laufe);i++){
-                if( ((WithForm)staples.get(bayNo).get(rowNo).get(i)).isFree()){
-                    tier = i;
-                    laufe = false;
-                    loadable = true;
+        int tier;
+        for (E e : staples.get(bayNo).get(rowNo)) {
+            if( ((WithForm)e).isFree()){
+                   tier =  ((WithStowLoc)e).loc().tier();
+                   return load(bayNo, rowNo, tier, elem);       
                 }
-            }
-            if(loadable){
-            //staples.get(bayNo).get(rowNo).set(tier,elem);
-            load(bayNo, rowNo, tier, elem);
-            }
-        
-        
-        return loadable;
+        }
+        return false;
     }
     @Override
     public boolean load(int bayNo, int rowNo, int tierNo, E elem) {
+        
+        checkElementIndex(rowNo, rows);
+        checkElementIndex(bayNo, bays);
+        checkElementIndex(tierNo, tiers);
         boolean loaded = false;
-        if( isGivenStowageLocationValid(bayNo, rowNo, tierNo) ){
+        
             if(((WithForm)staples.get(bayNo).get(rowNo).get(tierNo)).isFree()){
-                ((WithStowLoc)elem).setLoc(this, Values.stowageLocation(bayNo, rowNo, tierNo));
+                ((WithStowLoc)elem).setLoc(stowageReference, Values.stowageLocation(bayNo, rowNo, tierNo));
                 staples.get(bayNo).get(rowNo).set(tierNo,elem);
                 loaded = true;
                 if(Physobjects.DEBUG){
                     System.out.println(elem.getClass().getSimpleName()+((WithUniqueID)elem).uniqueID()+": Loaded in: b: "+bayNo+" r: "+rowNo+" t: "+tierNo);
                 }
             }
-        
-       }else{
-        loaded = false;
-        }
+            else{
+               if(Physobjects.DEBUG){
+                    System.out.println(elem.getClass().getSimpleName()+((WithUniqueID)elem).uniqueID()+":  Loaded FAILED in: b: "+bayNo+" r: "+rowNo+" t: "+tierNo);
+                }
+            }
         return loaded;
     }
     @Override
     public boolean load(E elem) {
-        boolean laufe = true,loaded = false;
-        
-        for(int i = 0; (i< bays) &&(laufe);i++){
-            for (int j = 0; (j < rows) &&(laufe); j++) {
-                    if(!(tierIsEmpty(i, j) || tierIsFull(i, j))){
-                        loaded = load(i,j,elem);
+        boolean loaded = false;
+        for(int i = 0; (i< bays);i++){
+            for (int j = 0; (j < rows); j++) {
+                    if((tierIsEmpty(i, j) || !(tierIsFull(i, j)))){
+                        return load(i,j,elem);
+                        
                     }
             }
             
@@ -122,108 +122,87 @@ final class Bounded3DimStackImpl<E> implements Stowage<E> {
     }
     @Override
     public boolean isEmpty() {
-        
-        boolean laufe = true;
-        for(int i = 0; (i< staples.size()) &&(laufe);i++){
-            for (int j = 0; (j < staples.get(i).size()) &&(laufe); j++) {
-                   laufe = tierIsEmpty(i, j);   
+     for (ArrayList<ArrayList<E>> arrayList : staples) {
+            for (ArrayList<E> arrayList1 : arrayList) {
+                for (E e : arrayList1) {
+                    if(!((WithForm)e).isFree())return false;
+                }
             }
-            
         }
-        return laufe;
+        return true;
     }
 
     @Override
     public boolean isFull() {
-        
-        boolean laufe = true;
-        for(int i = 0; (i< staples.size()) &&(laufe);i++){
-            for (int j = 0; (j < staples.get(i).size()) &&(laufe); j++) {
-                 laufe = tierIsFull(i, j);   
+        for (ArrayList<ArrayList<E>> arrayList : staples) {
+            for (ArrayList<E> arrayList1 : arrayList) {
+                for (E e : arrayList1) {
+                    if(((WithForm)e).isFree())return false;
+                }
             }
-            
         }
-        return laufe;
+        return true;
     }
 
     @Override
     public boolean tierIsEmpty(int bay, int row) {
-        boolean laufe = true; 
-        for (int k = 0;(k < staples.get(bay).get(row).size()) &&(laufe); k++) {
-                    laufe = ((WithForm)staples.get(bay).get(row).get(k)).isFree();
-           }
-        
- 
-        return laufe;
+        checkElementIndex(row, rows);
+        checkElementIndex(bay, bays);
+        for (E elem : staples.get(bay).get(row)) {
+            if(!((WithForm)elem).isFree())return false;
+        }
+        return true;
     }
 
     @Override
     public boolean tierIsFull(int bay, int row) {
-        boolean laufe = true; 
-        for (int k = 0;(k < staples.get(bay).get(row).size()) &&(laufe); k++) {
-                    laufe = !((WithForm) staples.get(bay).get(row).get(k)).isFree();
-           }
+        checkElementIndex(row, rows);
+        checkElementIndex(bay, bays);
+        for (E elem : staples.get(bay).get(row)) {
+            if(((WithForm)elem).isFree())return false;
+        }
+        return true;
         
- 
-        return laufe;
     }
 
     @Override
     public boolean contains(Object elem) {
-        boolean laufe = true;
-        for(int i = 0; (i< staples.size()) &&(laufe);i++){
-            for (int j = 0; (j < staples.get(i).size()) &&(laufe); j++) {
-                  for (int k = 0;(k < staples.get(i).get(j).size()) &&(laufe); k++) {
-                    laufe = !staples.get(i).get(j).get(k).equals(elem);
-                        staples.get(i).get(j).get(k).equals(elem);
-                    }
+        
+        for (ArrayList<ArrayList<E>> arrayList : staples) {
+            for (ArrayList<E> arrayList1 : arrayList) {
+                for (E e : arrayList1) {
+                    if(e.equals(elem))
+                        return true;
+                }
             }
-            
         }
-        return !laufe;
+        
+        return false;
     }
 
     @Override
-    public boolean containsAll(Collection<?> coll) {
-        throw new UnsupportedOperationException("..");
-//        
-//        boolean laufe = true;
-//        
-//        
-//        List<E> list = new ArrayList<E>(coll);
-//        for (int c = 0; (c < coll.size()) &&(laufe); c++) {
-//           
-//            
-//        }
-//            for(int i = 0; (i< staples.size()) &&(laufe);i++){
-//                for (int j = 0; (j < staples.get(i).size()) &&(laufe); j++) {
-//                      for (int k = 0;(k < staples.get(i).get(j).size()) &&(laufe); k++) {
-//                        laufe = !staples.get(i).get(j).get(k).equals(elem);
-//                        }
-//                }
-//
-//            }
-//        
-//        
-//        return !laufe;
-//        
-        
+    public boolean containsAll(Collection<? extends E> coll) {
+        if(coll == null) return false;
+
+        for (E e : coll) {
+               if(e == null || !contains(e))return false;
+        }
+        return true;
     }
 
     @Override
     public E get(StowageLocation stowLoc) {
-        
         int bay, row,tier;
         
         bay  = stowLoc.bay();
         row  = stowLoc.row();      
         tier = stowLoc.tier();
-        if((bay < bays) && (row < rows) && (tier < tiers)){
-            
-            if(((WithForm) staples.get(bay).get(row).get(tier)).isOccupied()) 
+        checkElementIndex(tier, tiers);
+        checkElementIndex(row, rows);
+        checkElementIndex(bay, bays);
+        if(((WithForm) staples.get(bay).get(row).get(tier)).isOccupied()) 
             return staples.get(stowLoc.bay()).get(stowLoc.row()).get(stowLoc.tier());
-        }
-        return null;
+       return null;
     }
     
 
@@ -243,36 +222,16 @@ final class Bounded3DimStackImpl<E> implements Stowage<E> {
 
     @Override
     public StowageLocation locationOf(E elem) {
-        boolean laufe = true;
-        StowageLocation loc = ZERO_STOWAGELOC;
-        for(int i = 0; (i< staples.size()) &&(laufe);i++){
-            for (int j = 0; (j < staples.get(i).size()) &&(laufe); j++) {
-                  for (int k = 0;(k < staples.get(i).get(j).size()) &&(laufe); k++) {
-                    laufe = !staples.get(i).get(j).get(k).equals(elem);
-                        loc = stowageLocation(i, j, k);
-                    }
+        for (ArrayList<ArrayList<E>> arrayList : staples) {
+            for (ArrayList<E> arrayList1 : arrayList) {
+                for (E e : arrayList1) {
+                    if(e.equals(elem))
+                    return ((WithStowLoc)elem).loc();
+                }
             }
-            
         }
-        return loc;
-    }
-    
-    
-    
-    public static void main(String[] args) {
-    }
 
-    @Override
-    public Mass mass() {
-      Mass accu = ZERO_MASS;
-      for (int i = 0; i < staples.size(); i++) {
-        for (int j = 0; j < staples.get(i).size(); j++) {
-            for (int k = 0; k < staples.get(i).get(j).size(); k++) {
-              accu = accu.add(((Body) staples.get(i).get(j).get(k)).mass());
-            }  
-        }   
-      }
-      return accu;
+        return Values.stowageLocation(-1, -1, -1);
     }
 
     @Override
@@ -315,7 +274,7 @@ final class Bounded3DimStackImpl<E> implements Stowage<E> {
     public void printStack() {
         String tmpstr = "";
         for (int i = 0; i < bays; i++) {
-            tmpstr = tmpstr + "-- B:"+i+"-- { \n";
+            tmpstr = tmpstr + "# B:"+i+"-------------------------------------------------- \n";
             for (int j = 0; j < rows; j++) {
                 tmpstr = tmpstr + "R:"+j+" [";
                 for (int k = 0; k < tiers;k++) {
@@ -325,7 +284,6 @@ final class Bounded3DimStackImpl<E> implements Stowage<E> {
                 tmpstr = tmpstr +"],";
                 if((j+1)%3==0) tmpstr = tmpstr + "\n";
             }
-           tmpstr = tmpstr +" } \n"; 
         }
         System.out.println(tmpstr);
     }
@@ -333,18 +291,37 @@ final class Bounded3DimStackImpl<E> implements Stowage<E> {
     public int freeSpace(){
         int space = 0;
 
-        for (int i = 0; i < bays; i++) {
-
-            for (int j = 0; j < rows; j++) {
-
-                for (int k = 0; k < tiers;k++) {
-                    if(((WithForm)staples.get(i).get(j).get(k)).isFree())
+        for (ArrayList<ArrayList<E>> arrayList : staples) {
+            for (ArrayList<E> arrayList1 : arrayList) {
+                for (E e : arrayList1) {
+                    if(((WithForm)e).isFree())
                         space++;
-                   }
+                }
             }
         }
         return space;
     }
+
+    @Override
+    public boolean load(StowageLocation loc, E elem) {
+        return load(loc.bay(),loc.row(), loc.tier(), elem);
+    }
+
+    @Override
+    public Mass mass() {
+      Mass accu = Values.ZERO_MASS;
+        for (ArrayList<ArrayList<E>> arrayList : staples) {
+            for (ArrayList<E> arrayList1 : arrayList) {
+                for (E e : arrayList1) {
+                    accu = accu.add(((Body) e).mass());
+                }
+            }
+  
+        }
+      
+      return accu;
+    }
+
 
 }
 

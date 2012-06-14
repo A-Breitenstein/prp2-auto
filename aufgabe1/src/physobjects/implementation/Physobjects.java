@@ -36,6 +36,8 @@ public final class Physobjects {
     public static final String NULLPALLETSYM = "0P";
     public static final String NONPALLETSYM = "NP";
     public static final String PALLETSYM = "SP";
+    public void xx (){}
+    
 
     private Physobjects(){}
     // CONTAINER OBJECTS
@@ -60,20 +62,20 @@ public final class Physobjects {
         return NonPallet.nonPallet();
     }
     //STOWAGE OBJECTS // erstmal mit public Konstrucktor weil generics ka :/
-    public static Stowage<Pallet> palletStowage(){
-        return new Bounded3DimStackImpl<Pallet>(1,9,3,initStapleNullPallet(1, 9,3));
+    public static Stowage<Pallet> palletStowage(Container con){
+        return new Bounded3DimStackImpl<Pallet>(1,9,3,initStapleNullPallet(1, 9,3),con);
     }
-    public static Stowage<Container> containerStowage(int bays,int rows,int tiers){    
-        return new Bounded3DimStackImpl<Container>(bays, rows, tiers,initStapleContainer(bays, rows, tiers));
+    public static Stowage<Container> containerStowage(int bays,int rows,int tiers,ContainerStowage terminal){    
+        return new Bounded3DimStackImpl<Container>(bays, rows, tiers,initStapleContainer(bays, rows, tiers),terminal);
     }
     public static ContainerStowage containerTerminal(int bays,int rows,int tiers){
         return TerminalStowage.createTerminalStowage(bays, rows, tiers);
     }
     public static Stowage<Pallet> nullPalletStowage(){
-        return new Bounded3DimStackImpl<Pallet>(0,0,0,null);
+        return new Bounded3DimStackImpl<Pallet>(0,0,0,null,null);
     }
     public static Stowage<Container> nullContainerStowage(){
-        return new Bounded3DimStackImpl<Container>(0,0,0,null);
+        return new Bounded3DimStackImpl<Container>(0,0,0,null,null);
     }
     
     private static List<Container> initStapleContainer(int bays,int rows,int tiers){
@@ -149,61 +151,34 @@ public final class Physobjects {
             System.out.println("JA");
         
         ArrayList<Pallet> aP = new ArrayList<Pallet>();
-        aP.add(pallet());
-        aP.add(pallet());
-        a.loadAll(aP);
-        aP.add(pallet());
-        aP.add(pallet());
-        aP.add(pallet());
-        aP.add(pallet());
-        aP.add(pallet());
-        aP.add(pallet());
-        aP.add(pallet());
-        aP.add(pallet());
-        aP.add(pallet());
-        aP.add(pallet());
-        aP.add(pallet());
-        aP.add(pallet());
-        aP.add(pallet());
-        aP.add(pallet());
-        aP.add(pallet());
-        aP.add(pallet());
-        aP.add(pallet());
-        aP.add(pallet());
-        aP.add(pallet());
-        aP.add(pallet());
-        aP.add(pallet());
-        aP.add(pallet());
-        aP.add(pallet());
-        aP.add(pallet());
-        aP.add(pallet());
-        aP.add(pallet());
-        aP.add(pallet());
-        aP.add(pallet());
-        aP.add(pallet());
-        aP.add(pallet());
-        aP.add(pallet());
-        aP.add(pallet());
-        aP.add(pallet());
-        aP.add(pallet());
-        aP.add(pallet());
-        aP.add(pallet());
-        aP.add(pallet());
-        aP.add(pallet());
-        aP.add(pallet());
-        aP.add(pallet());
-        a.loadAll(aP);
             
         List<Container> b = new ArrayList<Container>();
         getContainer(0, 1, 2, b);
         b.get(0).printStack();
         
-         a.load(0,4,testpallet);
-        System.out.println(testpallet.loc());
+        a.load(0,5,testpallet);
+        System.out.println(a.locationOf(testpallet));
+        
+        
+        
        ContainerStowage terminalStowage = containerTerminal(3, 9, 3);
        Container testContainer = container();
        terminalStowage.load(testContainer);
         System.out.println(testContainer.loc());
+        terminalStowage.printStack();
+        
+        
+        List<Pallet> test = new ArrayList<Pallet>();
+        for (int i = 0; i < 6; i++) {
+           test.add(pallet());   
+        }
+        
+        Container c = container();
+        c.loadAll(test);
+        System.out.println(c.containsAll(test));
+        c.contains(null);
+        c.containsAll(null);
+       
     }
     
     public static boolean getContainer(int bay,int row,int tier,List<Container> lc){

@@ -14,6 +14,7 @@ public interface WithStowLoc<S> {
     StowageLocation loc();
     void setLocNull();
     void setLoc(S stowage,StowageLocation loc);
+    S getStowageReference();
     
     
 }

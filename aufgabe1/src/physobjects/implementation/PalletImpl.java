@@ -4,6 +4,7 @@
  */
 package physobjects.implementation;
 import Values.implementation.Values;
+import physobjects.interfaces.Container;
 import physobjects.interfaces.Pallet;
 /**
  *
@@ -38,6 +39,8 @@ final class PalletImpl extends AbstractPallet {
     public String print() {
         return Physobjects.PALLETSYM;
     }
+
+
 
     
 }

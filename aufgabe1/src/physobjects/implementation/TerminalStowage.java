@@ -8,6 +8,7 @@ import Values.implementation.Values;
 import Values.interfaces.BoundingBox;
 import Values.interfaces.Mass;
 import Values.interfaces.StowageLocation;
+import Values.interfaces.UniqueID;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
@@ -21,19 +22,12 @@ import physobjects.interfaces.Stowage;
  */
 final class TerminalStowage extends AbstractBody implements ContainerStowage {
     private Stowage<Container> containerStowage;
+    private UniqueID uID;
     
     private TerminalStowage(int bays,int rows,int tiers){
-        containerStowage = Physobjects.containerStowage(bays, rows, tiers);
-        boundingBox = Values.boundingBoxInM(100, 100, 15);
-        
-        for(int i = 0;i < bays;i++){
-            for (int j = 0; j < rows; j++) {
-                for (int k = 0; k < tiers; k++) {
-                    containerStowage.load(i, j, Physobjects.nullContainer());    
-                }
-            }
-          }  
-        
+        containerStowage = Physobjects.containerStowage(bays, rows, tiers,this);
+        boundingBox = Values.boundingBoxInM(100, 100, 15); 
+        uID = Values.uniqueID();
     }
 
     
@@ -97,13 +91,14 @@ final class TerminalStowage extends AbstractBody implements ContainerStowage {
     }
 
     @Override
-    public boolean containsAll(Collection<?> coll) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
     public Container get(StowageLocation stowLoc) {
-        Container temp =  containerStowage.get(stowLoc);
+        Container temp = containerStowage.get(stowLoc);
+        if(temp == null){
+            return Physobjects.nullContainer();
+        }else{
+            containerStowage.load(stowLoc,Physobjects.nullContainer());
+        }
+        
         return temp; 
         
     }
@@ -148,6 +143,25 @@ final class TerminalStowage extends AbstractBody implements ContainerStowage {
 
     @Override
     public void printStack() {
+        System.out.println(this.getClass().getSimpleName()+": "+uniqueID()+" \n[");
         containerStowage.printStack();
+        System.out.println("]");
     }
+
+    @Override
+    public UniqueID uniqueID() {
+        return uID;
+    }
+
+    @Override
+    public boolean load(StowageLocation loc, Container elem) {
+        return load(loc.bay(),loc.row(), loc.tier(), elem);
+    }
+
+    @Override
+    public boolean containsAll(Collection<? extends Container> coll) {
+        return containerStowage.containsAll(coll);
+    }
+
+
 }
