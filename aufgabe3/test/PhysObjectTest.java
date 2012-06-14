@@ -73,6 +73,8 @@ public class PhysObjectTest {
     }
     @Test
     public void test_load4() {
+        //Test ob änderungen angenommen werden!!!!
+        assertEquals(false, true);
       
     }
     
