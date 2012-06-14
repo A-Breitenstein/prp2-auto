@@ -4,6 +4,11 @@
  */
 package Values.test;
 
+import java.util.ArrayList;
+import physobjects.interfaces.Pallet;
+import java.util.List;
+import physobjects.interfaces.Container;
+import physobjects.implementation.Physobjects;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -35,16 +40,126 @@ public class Bounded3DimStackImplTest {
     @After
     public void tearDown() {
     }
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
+//##############################################################################
+    private static List<Pallet> initStaplePallet(int bays,int rows,int tiers){
+        List<Pallet> arrayPallet = new ArrayList<Pallet>();
+        int i=0;
+       int elem_count = bays*rows*tiers;
+        while(i<elem_count){
+            Pallet np = Physobjects.pallet();
+            arrayPallet.add(np);
+            i++;
+        }
+        
+        return arrayPallet;
+    }
+    Container a = Physobjects.container();
+    
+    Container b = Physobjects.container();
+    List<Pallet> palletList = initStaplePallet(1, 9, 3);
+        
     
     @Test
-    public void test_InitBounded3DimStack(){
-        //Container a = Physobjects.container();
-        //assertEquals(true,  a.isEmpty());
+    public void test_load1() {
         
     }
+    @Test
+    public void test_load2() {
+        
+    }
+    @Test
+    public void test_load3() {
+        
+    }
+    @Test
+    public void test_load4() {
+      
+    }
+    
+    @Test
+    public void test_loadAll() {
+        assertEquals(true, b.loadAll(palletList));
+    }
+    
+    @Test
+    public void test_isEmpty() {
+        assertEquals(true,  a.isEmpty());
+     
+    }
+
+    @Test
+    public void test_isFull() {
+        
+    }
+
+    @Test
+    public void test_tierIsEmpty() {
+       
+    }
+
+    @Test
+    public void test_tierIsFull() {
+        
+    }
+
+    @Test
+    public void test_contains() {
+      
+    }
+
+    @Test
+    public void test_containsAll() {
+       
+    }
+
+    @Test
+    public void test_get() {
+       
+    }
+    
+
+    @Test
+    public void test_getAll() {
+       
+    }
+
+    @Test
+    public void test_locationOf() {
+       
+    }
+
+    @Test
+    public void test_getBoundingBox() {
+        
+    }
+       
+
+    @Test
+    public void test_emptyMass() {
+        
+    
+    }
+
+    @Test
+    public void test_maxMass() {
+        
+    }
+
+
+    @Test
+    public void test_printStack() {
+       
+    }
+    
+    public void test_freeSpace(){
+       
+    }
+
+    
+
+    @Test
+    public void test_mass() {
+     
+    }
+
 }
