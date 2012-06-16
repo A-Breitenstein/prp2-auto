@@ -3,6 +3,8 @@
  * and open the template in the editor.
  */
 
+import java.util.HashSet;
+import java.util.Set;
 import physobjects.interfaces.Container;
 import physobjects.implementation.Physobjects;
 import java.util.ArrayList;
@@ -57,6 +59,9 @@ public class PhysObjectTest {
     
     Container b = Physobjects.container();
     List<Pallet> palletList = initStaplePallet(1, 9, 3);
+    List<Pallet> palletListA = initStaplePallet(1, 9, 3);
+    Pallet tPA = Physobjects.pallet();
+    Pallet tPB = Physobjects.pallet();
         
     
     @Test
@@ -73,8 +78,7 @@ public class PhysObjectTest {
     }
     @Test
     public void test_load4() {
-        //Test ob änderungen angenommen werden!!!!
-        assertEquals(false, true);
+
       
     }
     
@@ -109,23 +113,33 @@ public class PhysObjectTest {
 
     @Test
     public void test_contains() {
-      
+        a.load(tPA);
+        assertEquals(true, a.contains(tPA));
     }
 
     @Test
     public void test_containsAll() {
-       
+       a.loadAll(palletList);
+       assertEquals(true, a.containsAll(palletList));
+       assertEquals(false, a.containsAll(palletListA));
     }
 
     @Test
     public void test_get() {
+       a.load(tPA);
+       assertEquals(tPA, a.get(tPA.loc()));
        
+       assertEquals(tPB, a.get(null));
+       //Fehler
+       assertEquals(tPB, a.get(tPB.loc()));
     }
     
 
     @Test
     public void test_getAll() {
-       
+       a.loadAll(palletList);
+       Set<Pallet> sPallet = new HashSet<Pallet>(palletList);
+       assertEquals((Set)sPallet, a.getAll());
     }
 
     @Test
