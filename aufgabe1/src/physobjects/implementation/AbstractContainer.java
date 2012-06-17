@@ -16,6 +16,7 @@ import physobjects.interfaces.Container;
 import physobjects.interfaces.ContainerStowage;
 import physobjects.interfaces.Pallet;
 import physobjects.interfaces.Stowage;
+import static com.google.common.base.Preconditions.*;
 /**
  *
  * @author abg667
@@ -111,16 +112,21 @@ abstract class AbstractContainer extends AbstractBody implements Container {
     @Override
     public Pallet get(StowageLocation stowLoc) {
         
+        
         Pallet nTemp = Physobjects.nonPallet();
         
-        Pallet temp = palletStowage.get(stowLoc);
-        if(temp == null){
-            return nTemp;
-        }else{
-            palletStowage.load(stowLoc,nTemp);
-             mass = mass.sub(temp.mass());
+        if(!(stowLoc == null)){
+            Pallet temp = palletStowage.get(stowLoc);
+
+            if(temp == null){
+                return nTemp;
+            }else{
+                palletStowage.load(stowLoc,nTemp);
+                 mass = mass.sub(temp.mass());
+            }
+            return temp;
         }
-        return temp;
+        return nTemp;
     }
 
     @Override
