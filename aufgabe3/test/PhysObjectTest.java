@@ -3,6 +3,9 @@
  * and open the template in the editor.
  */
 
+import Values.implementation.Values;
+import Values.interfaces.BoundingBox;
+import Values.interfaces.StowageLocation;
 import java.util.HashSet;
 import java.util.Set;
 import physobjects.interfaces.Container;
@@ -15,6 +18,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import physobjects.implementation.NonPallet;
 import static org.junit.Assert.*;
 
 /**
@@ -126,12 +130,14 @@ public class PhysObjectTest {
 
     @Test
     public void test_get() {
+       Pallet bPallet = Physobjects.nonPallet();
        a.load(tPA);
+       
        assertEquals(tPA, a.get(tPA.loc()));
        
-       assertEquals(tPB, a.get(null));
-       //Fehler
-       assertEquals(tPB, a.get(tPB.loc()));
+       assertEquals(bPallet instanceof NonPallet, a.get(null) instanceof NonPallet);
+       
+       assertNotSame(tPB, a.get(tPB.loc()));
     }
     
 
@@ -144,40 +150,57 @@ public class PhysObjectTest {
 
     @Test
     public void test_locationOf() {
+        a.load(tPA);
+        StowageLocation sLTest = Values.stowageLocation(0, 0, 0);
+ 
+        a.locationOf(tPA);
+        
+        assertEquals(sLTest, a.locationOf(tPA));
        
     }
 
     @Test
     public void test_getBoundingBox() {
+        BoundingBox boundingBox = Values.boundingBoxInM(6.058,2.438,2.591);
+        
+        assertEquals(boundingBox, a.getBoundingBox());
         
     }
        
 
     @Test
     public void test_emptyMass() {
-        
+    
+        assertEquals(Values.massInKg(2250), a.emptyMass());
     
     }
 
     @Test
     public void test_maxMass() {
-        
+    
+        assertEquals(Values.massInKg(24000), a.maxMass());
     }
 
 
     @Test
     public void test_printStack() {
+        a.loadAll(palletList);
+        a.printStack();
        
     }
     
+    @Test
     public void test_freeSpace(){
+        
+        assertFalse(a.isFree());
        
     }
-
-    
 
     @Test
     public void test_mass() {
-     
+        a.load(tPA);
+        a.load(tPB);
+        
+        assertEquals(Values.massInKg(2350), a.mass());
     }
 }

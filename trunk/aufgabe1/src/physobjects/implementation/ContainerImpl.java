@@ -26,7 +26,7 @@ final class ContainerImpl extends AbstractContainer  {
        palletStowage = Physobjects.palletStowage(this);
     }
     
-    static Container createContainer(){
+    public static Container createContainer(){
         return new ContainerImpl();
     } 
     
